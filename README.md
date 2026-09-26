@@ -90,8 +90,8 @@ Prediction Prediction Prediction
    Future Optimization
             ↓
        Dashboard / API
-
-🧠 System Workflow
+```
+# Project Architecture
 ```text
 
 
