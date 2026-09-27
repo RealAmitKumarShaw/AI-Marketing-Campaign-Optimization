@@ -1,10 +1,5 @@
 # AI-Based Marketing Campaign Optimization & Prediction
 
-
-Machine Learning-based marketing campaign analysis and optimization system using predictive analytics to predict ROI, Revenue, and Conversions.
-
-# AI-Based Marketing Campaign Optimization & Prediction
-
 An AI and Machine Learning-based marketing campaign optimization system that analyzes digital advertising campaign data and builds predictive models for **ROI, Revenue, and Conversion prediction**.
 
 The project aims to help understand campaign performance and provide a machine learning foundation for future campaign success prediction, explainability, optimization, and dashboard integration.
@@ -95,8 +90,8 @@ Prediction Prediction Prediction
    Future Optimization
             ↓
        Dashboard / API
-
-🧠 System Workflow
+```
+# Project Architecture
 ```text
 
 
