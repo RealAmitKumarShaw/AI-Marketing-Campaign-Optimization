@@ -1,0 +1,102 @@
+Feature,Mean_Absolute_SHAP
+num__bounce_rate,0.6093214027559618
+cat__device_type_Desktop,0.4946610181935596
+num__actual_cpc,0.4646843432216324
+cat__campaign_objective_Brand Awareness,0.2601249903763178
+num__impressions,0.21935072811617293
+cat__industry_vertical_E-commerce,0.21493227202037812
+num__campaign_day,0.18995623024139785
+cat__creative_format_Video,0.18969799349193356
+cat__income_bracket_<$50K,0.18711564888065915
+cat__retargeting_flag_False,0.15897614024496867
+cat__day_of_week_Saturday,0.13925687902951606
+cat__has_call_to_action_True,0.12650551957254072
+cat__purchase_intent_score_High,0.11731754804281527
+num__quality_score,0.1152652205562684
+cat__purchase_intent_score_Low,0.11415465949947533
+num__quarter,0.10639738723366757
+cat__industry_vertical_Finance,0.09922417710726154
+num__start_month,0.09001067656250672
+cat__campaign_objective_Engagement,0.07693359591076156
+cat__industry_vertical_Gaming,0.07611733996872788
+cat__has_call_to_action_False,0.07415647409893578
+cat__income_bracket_$50K-$100K,0.06828376744100821
+cat__retargeting_flag_True,0.059327806268935086
+cat__industry_vertical_Healthcare,0.056816464958433094
+cat__campaign_objective_Conversions,0.05470936664510516
+cat__day_of_week_Sunday,0.054005573436524734
+cat__income_bracket_>$200K,0.045642304602288644
+cat__industry_vertical_Education,0.03944366531113626
+num__avg_session_duration_seconds,0.0303844473965466
+cat__device_type_Mobile,0.029789982484048218
+num__pages_per_session,0.029067800479987634
+cat__industry_vertical_SaaS,0.02834227545713079
+cat__campaign_objective_Lead Generation,0.023497589790704643
+num__creative_age_days,0.0217541979386937
+cat__creative_emotion_Joy,0.01658221427374517
+cat__platform_Facebook,0.011626007301360354
+cat__platform_Google Ads,0.010648866255255414
+cat__creative_format_Text,0.010451805431256065
+cat__platform_TikTok,0.00980617542974652
+cat__platform_LinkedIn,0.0073414631390478335
+cat__income_bracket_$100K-$200K,0.0030436650554183887
+cat__audience_interest_category_Students,0.0020607279870659034
+num__hour_of_day,0.0019257801343686854
+num__start_day,0.0010470124590210616
+cat__creative_format_Interactive,0.00040432675713673226
+cat__day_of_week_Wednesday,0.0002239264065399766
+cat__ad_placement_Display Network,0.0
+cat__ad_placement_In-Stream Video,0.0
+cat__platform_Twitter,0.0
+cat__campaign_objective_App Installs,0.0
+num__start_year,0.0
+cat__platform_Instagram,0.0
+cat__ad_placement_Feed,0.0
+cat__operating_system_iOS,0.0
+cat__operating_system_Windows,0.0
+cat__operating_system_Other,0.0
+cat__operating_system_Android,0.0
+cat__device_type_Tablet,0.0
+cat__ad_placement_Stories,0.0
+cat__ad_placement_Search,0.0
+cat__ad_placement_Sidebar,0.0
+cat__creative_size_1200x628,0.0
+cat__creative_size_1920x1080,0.0
+cat__creative_size_300x250,0.0
+cat__creative_size_320x50,0.0
+cat__creative_size_728x90,0.0
+cat__creative_format_Carousel,0.0
+cat__creative_format_Image,0.0
+cat__operating_system_macOS,0.0
+cat__target_audience_gender_Female,0.0
+cat__target_audience_gender_All,0.0
+cat__target_audience_age_65+,0.0
+cat__target_audience_age_55-64,0.0
+cat__target_audience_age_45-54,0.0
+cat__target_audience_age_35-44,0.0
+cat__target_audience_age_25-34,0.0
+cat__target_audience_age_18-24,0.0
+cat__creative_emotion_Urgency,0.0
+cat__creative_emotion_Trust,0.0
+cat__creative_emotion_Neutral,0.0
+cat__creative_emotion_Fear,0.0
+cat__creative_emotion_Curiosity,0.0
+cat__ad_copy_length_Long,0.0
+cat__ad_copy_length_Medium,0.0
+cat__ad_copy_length_Short,0.0
+cat__creative_size_1080x1080,0.0
+cat__creative_format_Story,0.0
+cat__target_audience_gender_Male,0.0
+cat__audience_interest_category_Gamers,0.0
+cat__audience_interest_category_Health & Fitness,0.0
+cat__audience_interest_category_Tech Enthusiasts,0.0
+cat__audience_interest_category_Shoppers,0.0
+cat__audience_interest_category_Business Professionals,0.0
+cat__purchase_intent_score_Medium,0.0
+cat__day_of_week_Tuesday,0.0
+cat__day_of_week_Monday,0.0
+cat__day_of_week_Friday,0.0
+cat__day_of_week_Thursday,0.0
+cat__budget_tier_High,0.0
+cat__budget_tier_Low,0.0
+cat__budget_tier_Medium,0.0
