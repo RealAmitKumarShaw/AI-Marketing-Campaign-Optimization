@@ -1,0 +1,279 @@
+{% extends "base.html" %}
+
+{% block title %}Campaign Comparison | Side-by-Side Model Evaluation{% endblock %}
+{% block page_title %}Campaign Comparison{% endblock %}
+{% block page_subtitle %}Evaluate multiple campaign variations side-by-side with automated winning strategy identification{% endblock %}
+
+{% block content %}
+<div class="app-content">
+  <div class="page-header-banner mb-4">
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
+      <div>
+        <div class="d-flex align-items-center gap-2 mb-2">
+          <span class="badge-custom badge-violet"><i class="bi bi-columns-gap"></i> Multi-Campaign Benchmarking</span>
+          <span class="badge-custom badge-emerald"><i class="bi bi-trophy-fill"></i> Auto-Rank Winner</span>
+        </div>
+        <h2 class="text-white mb-1" style="font-size: 1.65rem;">Multi-Campaign Head-to-Head Comparison</h2>
+        <p class="text-secondary mb-0" style="font-size: 0.875rem; max-width: 700px;">
+          Compare 2 to 3 marketing campaign configurations across channels, budgets, creative formats, and audiences. The platform runs all 4 ML models and automatically selects the highest-scoring campaign with an emerald highlight.
+        </p>
+      </div>
+      <div class="d-flex gap-2">
+        <button type="button" class="btn btn-sm btn-outline-custom" onclick="reloadDefaultCampaigns()">
+          <i class="bi bi-arrow-counterclockwise me-1"></i> Reset Benchmark Trio
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Comparison Input Forms Grid -->
+  <div class="dashboard-card mb-4">
+    <div class="card-header-custom">
+      <h5><i class="bi bi-pencil-square text-primary"></i> Campaign Configurations to Compare</h5>
+      <button type="button" class="btn btn-sm btn-accent-custom" onclick="runComparison()">
+        <i class="bi bi-play-circle-fill"></i> Evaluate All Campaigns
+      </button>
+    </div>
+    <div class="card-body-custom">
+      <div class="row g-3" id="comparisonInputRow">
+        <!-- Campaign A -->
+        <div class="col-12 col-lg-4">
+          <div class="p-3 rounded-3 h-100" style="background: rgba(14, 15, 24, 0.75); border: 1px solid var(--glass-border);">
+            <div class="d-flex align-items-center justify-content-between mb-2">
+              <span class="badge-custom badge-blue font-mono">Campaign A</span>
+              <span class="text-muted font-mono" style="font-size: 0.7rem;">SaaS Benchmark</span>
+            </div>
+            <div class="mb-2">
+              <input type="text" class="form-control-custom form-control-sm fw-bold" id="cmpName0" value="Campaign A (SaaS Growth)">
+            </div>
+            <div class="row g-1 mb-2">
+              <div class="col-6">
+                <label class="form-label-custom" style="font-size: 0.7rem;">Platform</label>
+                <select class="form-select-custom form-select-sm" id="cmpPlatform0">
+                  {% for p in options.platform %}
+                    <option value="{{ p }}" {% if p == 'Facebook' %}selected{% endif %}>{{ p }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="col-6">
+                <label class="form-label-custom" style="font-size: 0.7rem;">Objective</label>
+                <select class="form-select-custom form-select-sm" id="cmpObjective0">
+                  {% for o in options.campaign_objective %}
+                    <option value="{{ o }}" {% if o == 'Conversions' %}selected{% endif %}>{{ o }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+            <div class="row g-1 mb-2">
+              <div class="col-6">
+                <label class="form-label-custom" style="font-size: 0.7rem;">Format</label>
+                <select class="form-select-custom form-select-sm" id="cmpFormat0">
+                  {% for f in options.creative_format %}
+                    <option value="{{ f }}" {% if f == 'Video' %}selected{% endif %}>{{ f }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="col-6">
+                <label class="form-label-custom" style="font-size: 0.7rem;">Device</label>
+                <select class="form-select-custom form-select-sm" id="cmpDevice0">
+                  {% for d in options.device_type %}
+                    <option value="{{ d }}" {% if d == 'Desktop' %}selected{% endif %}>{{ d }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+            <div class="row g-1">
+              <div class="col-6">
+                <label class="form-label-custom" style="font-size: 0.7rem;">Budget (₹)</label>
+                <input type="number" class="form-control-custom form-control-sm font-mono" id="cmpSpend0" value="5000" step="500">
+              </div>
+              <div class="col-6">
+                <label class="form-label-custom" style="font-size: 0.7rem;">Duration (d)</label>
+                <input type="number" class="form-control-custom form-control-sm font-mono" id="cmpDuration0" value="30">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Campaign B -->
+        <div class="col-12 col-lg-4">
+          <div class="p-3 rounded-3 h-100" style="background: rgba(14, 15, 24, 0.75); border: 1px solid var(--glass-border);">
+            <div class="d-flex align-items-center justify-content-between mb-2">
+              <span class="badge-custom badge-emerald font-mono">Campaign B</span>
+              <span class="text-muted font-mono" style="font-size: 0.7rem;">E-Commerce Variant</span>
+            </div>
+            <div class="mb-2">
+              <input type="text" class="form-control-custom form-control-sm fw-bold" id="cmpName1" value="Campaign B (Flash Sale)">
+            </div>
+            <div class="row g-1 mb-2">
+              <div class="col-6">
+                <label class="form-label-custom" style="font-size: 0.7rem;">Platform</label>
+                <select class="form-select-custom form-select-sm" id="cmpPlatform1">
+                  {% for p in options.platform %}
+                    <option value="{{ p }}" {% if p == 'Instagram' %}selected{% endif %}>{{ p }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="col-6">
+                <label class="form-label-custom" style="font-size: 0.7rem;">Objective</label>
+                <select class="form-select-custom form-select-sm" id="cmpObjective1">
+                  {% for o in options.campaign_objective %}
+                    <option value="{{ o }}" {% if o == 'Conversions' %}selected{% endif %}>{{ o }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+            <div class="row g-1 mb-2">
+              <div class="col-6">
+                <label class="form-label-custom" style="font-size: 0.7rem;">Format</label>
+                <select class="form-select-custom form-select-sm" id="cmpFormat1">
+                  {% for f in options.creative_format %}
+                    <option value="{{ f }}" {% if f == 'Carousel' %}selected{% endif %}>{{ f }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="col-6">
+                <label class="form-label-custom" style="font-size: 0.7rem;">Device</label>
+                <select class="form-select-custom form-select-sm" id="cmpDevice1">
+                  {% for d in options.device_type %}
+                    <option value="{{ d }}" {% if d == 'Mobile' %}selected{% endif %}>{{ d }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+            <div class="row g-1">
+              <div class="col-6">
+                <label class="form-label-custom" style="font-size: 0.7rem;">Budget (₹)</label>
+                <input type="number" class="form-control-custom form-control-sm font-mono" id="cmpSpend1" value="12000" step="500">
+              </div>
+              <div class="col-6">
+                <label class="form-label-custom" style="font-size: 0.7rem;">Duration (d)</label>
+                <input type="number" class="form-control-custom form-control-sm font-mono" id="cmpDuration1" value="14">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Campaign C -->
+        <div class="col-12 col-lg-4">
+          <div class="p-3 rounded-3 h-100" style="background: rgba(14, 15, 24, 0.75); border: 1px solid var(--glass-border);">
+            <div class="d-flex align-items-center justify-content-between mb-2">
+              <span class="badge-custom badge-orange font-mono">Campaign C</span>
+              <span class="text-muted font-mono" style="font-size: 0.7rem;">B2B Search Variant</span>
+            </div>
+            <div class="mb-2">
+              <input type="text" class="form-control-custom form-control-sm fw-bold" id="cmpName2" value="Campaign C (Enterprise Search)">
+            </div>
+            <div class="row g-1 mb-2">
+              <div class="col-6">
+                <label class="form-label-custom" style="font-size: 0.7rem;">Platform</label>
+                <select class="form-select-custom form-select-sm" id="cmpPlatform2">
+                  {% for p in options.platform %}
+                    <option value="{{ p }}" {% if p == 'Google Ads' %}selected{% endif %}>{{ p }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="col-6">
+                <label class="form-label-custom" style="font-size: 0.7rem;">Objective</label>
+                <select class="form-select-custom form-select-sm" id="cmpObjective2">
+                  {% for o in options.campaign_objective %}
+                    <option value="{{ o }}" {% if o == 'Lead Generation' %}selected{% endif %}>{{ o }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+            <div class="row g-1 mb-2">
+              <div class="col-6">
+                <label class="form-label-custom" style="font-size: 0.7rem;">Format</label>
+                <select class="form-select-custom form-select-sm" id="cmpFormat2">
+                  {% for f in options.creative_format %}
+                    <option value="{{ f }}" {% if f == 'Image' %}selected{% endif %}>{{ f }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="col-6">
+                <label class="form-label-custom" style="font-size: 0.7rem;">Device</label>
+                <select class="form-select-custom form-select-sm" id="cmpDevice2">
+                  {% for d in options.device_type %}
+                    <option value="{{ d }}" {% if d == 'Desktop' %}selected{% endif %}>{{ d }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+            <div class="row g-1">
+              <div class="col-6">
+                <label class="form-label-custom" style="font-size: 0.7rem;">Budget (₹)</label>
+                <input type="number" class="form-control-custom form-control-sm font-mono" id="cmpSpend2" value="8000" step="500">
+              </div>
+              <div class="col-6">
+                <label class="form-label-custom" style="font-size: 0.7rem;">Duration (d)</label>
+                <input type="number" class="form-control-custom form-control-sm font-mono" id="cmpDuration2" value="45">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Comparison Results Section -->
+  <div id="comparisonResultsContainer" class="d-none">
+    <!-- Comparison Cards Row (Populated dynamically) -->
+    <div class="row g-3 mb-4" id="comparisonCardsRow"></div>
+
+    <!-- Comparative Table Matrix -->
+    <div class="dashboard-card mb-4">
+      <div class="card-header-custom">
+        <h5><i class="bi bi-table text-primary"></i> Head-to-Head Comparative Metric Matrix</h5>
+      </div>
+      <div class="card-body-custom p-0">
+        <div class="table-responsive">
+          <table class="table-custom font-mono">
+            <thead>
+              <tr id="matrixHeaderRow">
+                <th>Metric / Attribute</th>
+              </tr>
+            </thead>
+            <tbody id="matrixTableBody">
+              <!-- Populated by comparison.js -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Side-by-side Visual Charts -->
+    <div class="row g-4">
+      <div class="col-12 col-xl-8">
+        <div class="dashboard-card h-100">
+          <div class="card-header-custom">
+            <h5><i class="bi bi-bar-chart-fill text-primary"></i> ROI & Revenue Comparison</h5>
+          </div>
+          <div class="card-body-custom">
+            <div style="height: 320px; position: relative;">
+              <canvas id="cmpBarChart"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-12 col-xl-4">
+        <div class="dashboard-card h-100">
+          <div class="card-header-custom">
+            <h5><i class="bi bi-pie-chart-fill text-primary"></i> Success Probability Share</h5>
+          </div>
+          <div class="card-body-custom">
+            <div style="height: 320px; position: relative;">
+              <canvas id="cmpDonutChart"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/comparison.js') }}"></script>
+{% endblock %}

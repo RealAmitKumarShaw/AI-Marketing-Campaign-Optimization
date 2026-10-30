@@ -1,0 +1,796 @@
+{% extends "base.html" %}
+
+{% block title %}Campaigns, Designed to Perform | AI Marketing Intelligence Platform{% endblock %}
+
+{% block content %}
+<!-- ============================================================
+     1. THREE.JS 3D SMOKED-GLASS HERO SECTION
+     ============================================================ -->
+<section class="glass-hero-section" id="glassHeroContainer" aria-label="3D Smoked-Glass AI Hero">
+  <!-- Three.js WebGL Canvas for 3D Polygon Shards -->
+  <canvas id="heroWebglCanvas" aria-label="Interactive 3D Glass Polygon Shards"></canvas>
+
+  <!-- Static CSS Fallback if WebGL is unavailable -->
+  <div class="webgl-fallback-container" aria-hidden="true"></div>
+
+  <!-- Hero DOM Layer (Selectable text mapped over 3D glass stage) -->
+  <div class="glass-hero-overlay">
+    <!-- Small Technical Eyebrow -->
+    <div class="hero-eyebrow-chip">
+      <span class="status-dot-lavender"></span>
+      <span>AI Marketing Intelligence Platform</span>
+    </div>
+
+    <!-- Main Headline -->
+    <h1 class="hero-headline">
+      Campaigns,<br>
+      <span class="hero-headline-sub">Designed to Perform.</span>
+    </h1>
+
+    <!-- Description -->
+    <p class="hero-description">
+      Predict campaign performance, understand marketing outcomes, and discover smarter strategies using trained machine learning models.
+    </p>
+
+    <!-- Primary Action Buttons (Clickable HTML Elements triggering cinematic 3D shatter) -->
+    <div class="hero-actions">
+      <button type="button" class="btn-glass-primary" id="btnExploreDashboard">
+        <i class="bi bi-grid-1x2-fill"></i>
+        <span>Explore Dashboard</span>
+      </button>
+
+      <a href="#campaignOptimizerSection" class="btn-glass-secondary" id="btnHeroOptimize">
+        <span>Optimize Campaign →</span>
+      </a>
+    </div>
+
+    <!-- Small Technical Labels floating on the glass structure -->
+    <div class="hero-technical-grid">
+      <div class="hero-tech-badge">
+        <i class="bi bi-graph-up"></i>
+        <span>ROI PREDICTION</span>
+      </div>
+      <div class="hero-tech-badge">
+        <i class="bi bi-currency-rupee"></i>
+        <span>REVENUE INTELLIGENCE</span>
+      </div>
+      <div class="hero-tech-badge">
+        <i class="bi bi-funnel"></i>
+        <span>CONVERSION ANALYTICS</span>
+      </div>
+      <div class="hero-tech-badge">
+        <i class="bi bi-shield-check"></i>
+        <span>CAMPAIGN SUCCESS</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Floating Return-To-Hero Button (Appears when glass is shattered) -->
+<button type="button" class="btn-return-hero d-none" id="btnReturnToHero" aria-label="Reassemble Glass and Return to Hero">
+  <i class="bi bi-gem"></i>
+  <span>Return to 3D Glass Hero</span>
+</button>
+
+<!-- ============================================================
+     2. CAMPAIGN ANALYTICS DASHBOARD (DARK SMOKED GLASS)
+     ============================================================ -->
+<div class="app-content" id="dashboardOverview">
+  <!-- Top Welcome Banner -->
+  <div class="page-header-banner mb-4">
+    <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3">
+      <div>
+        <div class="d-flex align-items-center gap-2 mb-2">
+          <span class="badge-custom badge-blue"><i class="bi bi-gem"></i> Facet Smoked Glass System</span>
+          <span class="badge-custom badge-emerald"><i class="bi bi-check-circle-fill"></i> 4 ML Models Synchronized</span>
+          <span class="badge-custom badge-navy font-mono">Member 4 Suite</span>
+        </div>
+        <h2 class="text-white mb-1" style="font-size: 1.65rem;">Campaign Analytics & Prediction Engine</h2>
+        <p class="text-secondary mb-0" style="font-size: 0.875rem; max-width: 720px;">
+          Empowering digital marketing teams with real predictive ML models for ROI, Revenue, Conversion forecasting, and multi-objective campaign optimization.
+        </p>
+      </div>
+      <div class="d-flex align-items-center gap-2">
+        <a href="#campaignOptimizerSection" class="btn btn-accent-custom text-nowrap">
+          <i class="bi bi-lightning-charge-fill"></i> Run Campaign Optimizer
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOUR MAIN KPI PANELS (SMOKED GLASS WITH THIN GLOWING BORDER) -->
+  <div class="row g-3 mb-4">
+    <!-- 1. Predicted ROI (%) -->
+    <div class="col-12 col-sm-6 col-xl-3">
+      <div class="kpi-card kpi-emerald">
+        <div class="kpi-header">
+          <span class="kpi-title">Predicted / Avg ROI</span>
+          <div class="kpi-icon-wrap"><i class="bi bi-graph-up"></i></div>
+        </div>
+        <div>
+          <div class="kpi-value text-success" id="kpiRoi">+652.5%</div>
+          <div class="kpi-subtitle">
+            <i class="bi bi-shield-check text-success"></i> Random Forest Regressor (R²: 0.688)
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. Predicted Revenue (₹) -->
+    <div class="col-12 col-sm-6 col-xl-3">
+      <div class="kpi-card kpi-blue">
+        <div class="kpi-header">
+          <span class="kpi-title">Predicted / Avg Revenue</span>
+          <div class="kpi-icon-wrap"><i class="bi bi-currency-rupee"></i></div>
+        </div>
+        <div>
+          <div class="kpi-value text-primary" id="kpiRevenue">₹28,415.77</div>
+          <div class="kpi-subtitle">
+            <i class="bi bi-shield-check" style="color: var(--lavender-primary);"></i> Tuned Gradient Boosting (R²: 0.741)
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. Conversion Rate (%) -->
+    <div class="col-12 col-sm-6 col-xl-3">
+      <div class="kpi-card kpi-violet">
+        <div class="kpi-header">
+          <span class="kpi-title">Conversion Rate (%)</span>
+          <div class="kpi-icon-wrap"><i class="bi bi-funnel"></i></div>
+        </div>
+        <div>
+          <div class="kpi-value text-indigo" id="kpiConversionRate">3.64%</div>
+          <div class="kpi-subtitle">
+            <i class="bi bi-shield-check" style="color: #38bdf8;"></i> GB Regressor log1p (R²: 0.756)
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4. Campaign Success Probability (%) -->
+    <div class="col-12 col-sm-6 col-xl-3">
+      <div class="kpi-card kpi-orange">
+        <div class="kpi-header">
+          <span class="kpi-title">Success Probability</span>
+          <div class="kpi-icon-wrap"><i class="bi bi-trophy"></i></div>
+        </div>
+        <div>
+          <div class="kpi-value text-warning" id="kpiSuccessRate">78.3%</div>
+          <div class="kpi-subtitle">
+            <i class="bi bi-shield-check text-warning"></i> GB Classifier (Acc: 89.65%)
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECONDARY BENCHMARK ROW -->
+  <div class="row g-3 mb-4">
+    <div class="col-6 col-md-3">
+      <div class="secondary-stat-box">
+        <div class="text-muted font-mono" style="font-size: 0.7rem; font-weight: 600;">DATASET TOTAL REVENUE</div>
+        <div class="fs-5 fw-bold text-white mt-1 font-mono" id="kpiTotalRevenue">₹28.41 Cr</div>
+        <div class="text-muted" style="font-size: 0.7rem;">10,000 Historic Campaigns</div>
+      </div>
+    </div>
+    <div class="col-6 col-md-3">
+      <div class="secondary-stat-box">
+        <div class="text-muted font-mono" style="font-size: 0.7rem; font-weight: 600;">AVERAGE CPA</div>
+        <div class="fs-5 fw-bold text-white mt-1 font-mono" id="kpiAvgCpa">₹190.90</div>
+        <div class="text-muted" style="font-size: 0.7rem;">Cost Per Acquisition</div>
+      </div>
+    </div>
+    <div class="col-6 col-md-3">
+      <div class="secondary-stat-box">
+        <div class="text-muted font-mono" style="font-size: 0.7rem; font-weight: 600;">AVERAGE CTR</div>
+        <div class="fs-5 fw-bold text-white mt-1 font-mono" id="kpiAvgCtr">2.31%</div>
+        <div class="text-muted" style="font-size: 0.7rem;">Click-Through Rate</div>
+      </div>
+    </div>
+    <div class="col-6 col-md-3">
+      <div class="secondary-stat-box">
+        <div class="text-muted font-mono" style="font-size: 0.7rem; font-weight: 600;">AVERAGE CPC</div>
+        <div class="fs-5 fw-bold text-white mt-1 font-mono" id="kpiAvgCpc">₹3.29</div>
+        <div class="text-muted" style="font-size: 0.7rem;">Cost Per Click</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CHARTS ROW 1: CHANNEL PERFORMANCE & OBJECTIVE BREAKDOWN -->
+  <div class="row g-3 mb-4">
+    <div class="col-12 col-xl-8">
+      <div class="dashboard-card h-100">
+        <div class="card-header-custom">
+          <h5><i class="bi bi-bar-chart-fill text-primary"></i> Marketing Channel Performance Comparison</h5>
+          <span class="badge-custom badge-navy">Dual Y-Axis Benchmark</span>
+        </div>
+        <div class="card-body-custom">
+          <div style="height: 320px; position: relative;">
+            <canvas id="channelChart"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12 col-xl-4">
+      <div class="dashboard-card h-100">
+        <div class="card-header-custom">
+          <h5><i class="bi bi-pie-chart-fill text-primary"></i> Objective Distribution</h5>
+          <span class="badge-custom badge-blue">Spend Share</span>
+        </div>
+        <div class="card-body-custom d-flex flex-column justify-content-center">
+          <div style="height: 250px; position: relative;">
+            <canvas id="objectiveChart"></canvas>
+          </div>
+          <div class="text-center mt-3 text-muted font-mono" style="font-size: 0.72rem;">
+            Conversions & Lead Generation drive 52% of dataset spend.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CHARTS ROW 2: DURATION VS ROI & TRAINED MODEL VALIDATION MATRIX -->
+  <div class="row g-3 mb-4">
+    <div class="col-12 col-xl-7">
+      <div class="dashboard-card h-100">
+        <div class="card-header-custom">
+          <h5><i class="bi bi-calendar2-week-fill text-primary"></i> Campaign Duration vs ROI Insights</h5>
+          <span class="badge-custom badge-emerald">Optimal: 30-45 Days</span>
+        </div>
+        <div class="card-body-custom">
+          <div style="height: 290px; position: relative;">
+            <canvas id="durationChart"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12 col-xl-5">
+      <div class="dashboard-card h-100">
+        <div class="card-header-custom">
+          <h5><i class="bi bi-check2-circle text-primary"></i> Trained Model Validation Matrix</h5>
+          <span class="badge-custom badge-emerald">All 4 Operational</span>
+        </div>
+        <div class="card-body-custom p-0">
+          <div class="table-responsive">
+            <table class="table-custom">
+              <thead>
+                <tr>
+                  <th>Model</th>
+                  <th>Target</th>
+                  <th>Key Metric</th>
+                  <th>Score</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="fw-bold">Member 1</td>
+                  <td>Campaign ROI</td>
+                  <td>R² / MAE</td>
+                  <td><span class="badge-custom badge-emerald">R² 0.688</span></td>
+                </tr>
+                <tr>
+                  <td class="fw-bold">Member 2</td>
+                  <td>Revenue (₹)</td>
+                  <td>R² / RMSE</td>
+                  <td><span class="badge-custom badge-blue">R² 0.741</span></td>
+                </tr>
+                <tr>
+                  <td class="fw-bold">Member 2</td>
+                  <td>Conversions</td>
+                  <td>R² / MAE</td>
+                  <td><span class="badge-custom badge-violet">R² 0.756</span></td>
+                </tr>
+                <tr>
+                  <td class="fw-bold">Member 3</td>
+                  <td>Success (Profit>0)</td>
+                  <td>Accuracy</td>
+                  <td><span class="badge-custom badge-orange">89.65%</span></td>
+                </tr>
+                <tr>
+                  <td class="fw-bold text-primary">Member 4 (You)</td>
+                  <td>Optimization Engine</td>
+                  <td>Composite Score</td>
+                  <td><span class="badge-custom badge-emerald">Multi-Objective</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DEDICATED SHAP EXPLAINABILITY SECTION (GROUNDED IN REAL MODEL ARTIFACTS) -->
+  <div class="dashboard-card mb-4" id="explainabilitySection">
+    <div class="card-header-custom">
+      <div class="d-flex align-items-center gap-2">
+        <i class="bi bi-cpu-fill fs-5" style="color: var(--lavender-primary);"></i>
+        <div>
+          <h5 class="mb-0">Explainable AI (XAI) — Grounded SHAP Importance</h5>
+          <span class="text-muted" style="font-size: 0.75rem;">Verified SHAP Tree Explanations from Success Prediction Model</span>
+        </div>
+      </div>
+      <span class="badge-custom badge-blue">Member 3 Artifacts</span>
+    </div>
+    <div class="card-body-custom">
+      <div class="row g-4">
+        <!-- Global SHAP Feature Drivers -->
+        <div class="col-12 col-lg-7">
+          <h6 class="text-white fw-bold mb-3 font-mono" style="font-size: 0.85rem;">
+            <i class="bi bi-bar-chart-steps me-1 text-primary"></i> TOP GLOBAL FEATURE IMPACT (MEAN |SHAP| VALUES)
+          </h6>
+          <div class="table-responsive">
+            <table class="table-custom">
+              <thead>
+                <tr>
+                  <th>Rank</th>
+                  <th>Feature Name</th>
+                  <th>Mean |SHAP|</th>
+                  <th>Directional Impact</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="font-mono text-muted">#1</td>
+                  <td class="fw-bold">Bounce Rate</td>
+                  <td class="font-mono text-primary">0.6093</td>
+                  <td><span class="badge-custom badge-rose">Lower = Highly Positive</span></td>
+                </tr>
+                <tr>
+                  <td class="font-mono text-muted">#2</td>
+                  <td class="fw-bold">Device: Desktop</td>
+                  <td class="font-mono text-primary">0.4947</td>
+                  <td><span class="badge-custom badge-emerald">Desktop = Strong Lift</span></td>
+                </tr>
+                <tr>
+                  <td class="font-mono text-muted">#3</td>
+                  <td class="fw-bold">Actual CPC</td>
+                  <td class="font-mono text-primary">0.4647</td>
+                  <td><span class="badge-custom badge-rose">Lower CPC = Positive</span></td>
+                </tr>
+                <tr>
+                  <td class="font-mono text-muted">#4</td>
+                  <td class="fw-bold">Objective: Brand Awareness</td>
+                  <td class="font-mono text-primary">0.2601</td>
+                  <td><span class="badge-custom badge-blue">Scale Reach</span></td>
+                </tr>
+                <tr>
+                  <td class="font-mono text-muted">#5</td>
+                  <td class="fw-bold">Impressions Scale</td>
+                  <td class="font-mono text-primary">0.2194</td>
+                  <td><span class="badge-custom badge-emerald">Volume Positive</span></td>
+                </tr>
+                <tr>
+                  <td class="font-mono text-muted">#6</td>
+                  <td class="fw-bold">Industry: E-commerce</td>
+                  <td class="font-mono text-primary">0.2149</td>
+                  <td><span class="badge-custom badge-emerald">Transaction Lift</span></td>
+                </tr>
+                <tr>
+                  <td class="font-mono text-muted">#7</td>
+                  <td class="fw-bold">Creative: Video Format</td>
+                  <td class="font-mono text-primary">0.1897</td>
+                  <td><span class="badge-custom badge-emerald">Engagement Lift</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Local Waterfall Explanation (Campaign 6252) -->
+        <div class="col-12 col-lg-5">
+          <h6 class="text-white fw-bold mb-3 font-mono" style="font-size: 0.85rem;">
+            <i class="bi bi-water me-1 text-primary"></i> LOCAL CAMPAIGN WATERFALL (RECORD #6252)
+          </h6>
+          <div class="p-3 rounded-3" style="background: rgba(14, 15, 24, 0.6); border: 1px solid var(--glass-border);">
+            <div class="d-flex align-items-center justify-content-between mb-3">
+              <span class="badge-custom badge-navy font-mono">Target: Profit > 0</span>
+              <span class="text-success font-mono fw-bold" style="font-size: 0.75rem;">SHAP Sum: +0.28</span>
+            </div>
+            <div class="d-flex flex-column gap-2" style="font-size: 0.8rem;">
+              <div class="d-flex justify-content-between align-items-center p-2 rounded" style="background: rgba(54, 214, 126, 0.08);">
+                <span><i class="bi bi-plus-circle text-success me-1"></i> E-commerce Vertical</span>
+                <span class="font-mono text-success fw-bold">+0.2229</span>
+              </div>
+              <div class="d-flex justify-content-between align-items-center p-2 rounded" style="background: rgba(54, 214, 126, 0.08);">
+                <span><i class="bi bi-plus-circle text-success me-1"></i> Brand Awareness Objective</span>
+                <span class="font-mono text-success fw-bold">+0.1820</span>
+              </div>
+              <div class="d-flex justify-content-between align-items-center p-2 rounded" style="background: rgba(54, 214, 126, 0.08);">
+                <span><i class="bi bi-plus-circle text-success me-1"></i> Has Call To Action = True</span>
+                <span class="font-mono text-success fw-bold">+0.1097</span>
+              </div>
+              <div class="d-flex justify-content-between align-items-center p-2 rounded" style="background: rgba(251, 113, 133, 0.08);">
+                <span><i class="bi bi-dash-circle text-danger me-1"></i> Elevated Bounce Rate</span>
+                <span class="font-mono text-danger fw-bold">-0.9766</span>
+              </div>
+              <div class="d-flex justify-content-between align-items-center p-2 rounded" style="background: rgba(251, 113, 133, 0.08);">
+                <span><i class="bi bi-dash-circle text-danger me-1"></i> Non-Desktop (Mobile Browsing)</span>
+                <span class="font-mono text-danger fw-bold">-0.4710</span>
+              </div>
+            </div>
+            <div class="mt-3 text-muted font-mono" style="font-size: 0.7rem; line-height: 1.4;">
+              Source: <code>results/success_shap_campaign_6252.csv</code>. SHAP values calculate marginal log-odds impact on binary campaign profitability.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- INTERACTIVE CAMPAIGN OPTIMIZER SECTION (EMBEDDED FOR SEAMLESS WORKFLOW) -->
+  <div id="campaignOptimizerSection" class="dashboard-card mb-4" style="border-color: rgba(170, 136, 255, 0.35);">
+    <div class="card-header-custom">
+      <div class="d-flex align-items-center gap-2">
+        <i class="bi bi-lightning-charge-fill fs-5" style="color: var(--emerald-primary);"></i>
+        <div>
+          <h5 class="mb-0">Campaign Optimizer & Strategy Ranker</h5>
+          <span class="text-muted" style="font-size: 0.75rem;">Multi-Objective Recommendation Engine (Member 4 Main Feature)</span>
+        </div>
+      </div>
+      <div class="d-flex align-items-center gap-2">
+        <a href="/optimizer" class="btn btn-sm btn-outline-custom">
+          <i class="bi bi-box-arrow-up-right"></i> Full Optimizer Page
+        </a>
+      </div>
+    </div>
+    <div class="card-body-custom">
+      <div class="row g-4">
+        <!-- Left: Form -->
+        <div class="col-12 col-xl-5">
+          <form id="optimizerForm" onsubmit="handleOptimizeSubmit(event)">
+            <!-- Optimization Priority -->
+            <div class="mb-3 p-3 rounded-3" style="background: rgba(14, 15, 24, 0.85); border: 1px solid var(--glass-border);">
+              <label class="form-label-custom">
+                <span>Optimization Priority</span>
+                <span class="sub text-primary">Composite Weights</span>
+              </label>
+              <select class="form-select-custom" id="optPriority" name="priority">
+                <option value="balanced" selected>Balanced Performance (35% Success, 30% ROI, 20% Rev, 15% Conv)</option>
+                <option value="max_roi">Maximum ROI & Capital Efficiency (50% ROI, 25% Success)</option>
+                <option value="max_revenue">Revenue Scale & Market Capture (45% Revenue, 20% ROI)</option>
+                <option value="low_risk">Low Risk / Highest Probability of Success (55% Success)</option>
+              </select>
+            </div>
+
+            <!-- Campaign Identity -->
+            <div class="mb-3">
+              <label class="form-label-custom" for="campaignName">Campaign Name</label>
+              <input type="text" class="form-control-custom" id="campaignName" name="campaign_name" value="{{ sample.campaign_name }}" required>
+            </div>
+
+            <div class="row g-2 mb-3">
+              <div class="col-6">
+                <label class="form-label-custom" for="campaignObjective">Objective</label>
+                <select class="form-select-custom" id="campaignObjective" name="campaign_objective">
+                  {% for obj in options.campaign_objective %}
+                    <option value="{{ obj }}" {% if obj == sample.campaign_objective %}selected{% endif %}>{{ obj }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="col-6">
+                <label class="form-label-custom" for="industryVertical">Industry</label>
+                <select class="form-select-custom" id="industryVertical" name="industry_vertical">
+                  {% for ind in options.industry_vertical %}
+                    <option value="{{ ind }}" {% if ind == sample.industry_vertical %}selected{% endif %}>{{ ind }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+
+            <!-- Channel & Creative -->
+            <div class="row g-2 mb-3">
+              <div class="col-6">
+                <label class="form-label-custom" for="platform">Channel</label>
+                <select class="form-select-custom" id="platform" name="platform">
+                  {% for plat in options.platform %}
+                    <option value="{{ plat }}" {% if plat == sample.platform %}selected{% endif %}>{{ plat }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="col-6">
+                <label class="form-label-custom" for="adPlacement">Ad Placement</label>
+                <select class="form-select-custom" id="adPlacement" name="ad_placement">
+                  {% for plc in options.ad_placement %}
+                    <option value="{{ plc }}" {% if plc == sample.ad_placement %}selected{% endif %}>{{ plc }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+
+            <div class="row g-2 mb-3">
+              <div class="col-6">
+                <label class="form-label-custom" for="creativeFormat">Format</label>
+                <select class="form-select-custom" id="creativeFormat" name="creative_format">
+                  {% for fmt in options.creative_format %}
+                    <option value="{{ fmt }}" {% if fmt == sample.creative_format %}selected{% endif %}>{{ fmt }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="col-6">
+                <label class="form-label-custom" for="creativeEmotion">Emotion</label>
+                <select class="form-select-custom" id="creativeEmotion" name="creative_emotion">
+                  {% for emo in options.creative_emotion %}
+                    <option value="{{ emo }}" {% if emo == sample.creative_emotion %}selected{% endif %}>{{ emo }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+
+            <!-- Targeting -->
+            <div class="row g-2 mb-3">
+              <div class="col-6">
+                <label class="form-label-custom" for="targetAge">Target Age</label>
+                <select class="form-select-custom" id="targetAge" name="target_audience_age">
+                  {% for age in options.target_audience_age %}
+                    <option value="{{ age }}" {% if age == sample.target_audience_age %}selected{% endif %}>{{ age }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="col-6">
+                <label class="form-label-custom" for="targetGender">Gender</label>
+                <select class="form-select-custom" id="targetGender" name="target_audience_gender">
+                  {% for g in options.target_audience_gender %}
+                    <option value="{{ g }}" {% if g == sample.target_audience_gender %}selected{% endif %}>{{ g }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+
+            <div class="row g-2 mb-3">
+              <div class="col-6">
+                <label class="form-label-custom" for="deviceType">Device</label>
+                <select class="form-select-custom" id="deviceType" name="device_type">
+                  {% for dev in options.device_type %}
+                    <option value="{{ dev }}" {% if dev == sample.device_type %}selected{% endif %}>{{ dev }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="col-6">
+                <label class="form-label-custom" for="purchaseIntent">Purchase Intent</label>
+                <select class="form-select-custom" id="purchaseIntent" name="purchase_intent_score">
+                  {% for pi in options.purchase_intent_score %}
+                    <option value="{{ pi }}" {% if pi == sample.purchase_intent_score %}selected{% endif %}>{{ pi }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+
+            <!-- Budget & Duration -->
+            <div class="mb-3">
+              <label class="form-label-custom" for="adSpend">
+                <span>Campaign Budget (INR ₹)</span>
+                <span class="sub text-primary fw-bold font-mono" id="adSpendDisplay">₹5,000.00</span>
+              </label>
+              <div class="input-group">
+                <span class="input-group-text-custom">₹</span>
+                <input type="number" class="form-control-custom" id="adSpend" name="ad_spend" value="{{ sample.ad_spend }}" min="500" max="100000" step="500" oninput="updateSpendDisplay(this.value)" required>
+              </div>
+              <div class="d-flex gap-1 mt-1">
+                <button type="button" class="btn btn-sm btn-outline-custom py-0 px-2" style="font-size: 0.7rem;" onclick="setBudget(3000)">₹3k</button>
+                <button type="button" class="btn btn-sm btn-outline-custom py-0 px-2" style="font-size: 0.7rem;" onclick="setBudget(5000)">₹5k</button>
+                <button type="button" class="btn btn-sm btn-outline-custom py-0 px-2" style="font-size: 0.7rem;" onclick="setBudget(10000)">₹10k</button>
+                <button type="button" class="btn btn-sm btn-outline-custom py-0 px-2" style="font-size: 0.7rem;" onclick="setBudget(25000)">₹25k</button>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label-custom" for="campaignDay">
+                <span>Campaign Duration</span>
+                <span class="sub text-primary fw-bold font-mono" id="durationDisplay">{{ sample.campaign_day }} Days</span>
+              </label>
+              <div class="input-slider-wrap">
+                <input type="range" class="slider-custom" id="campaignDay" name="campaign_day" min="1" max="90" value="{{ sample.campaign_day }}" oninput="updateDurationDisplay(this.value)">
+                <span class="slider-value-display font-mono" id="durationValueBadge">{{ sample.campaign_day }}d</span>
+              </div>
+            </div>
+
+            <!-- Switches -->
+            <div class="row g-2 mb-4 p-3 rounded-3" style="background: rgba(14, 15, 24, 0.85); border: 1px solid var(--glass-border);">
+              <div class="col-6">
+                <div class="form-check form-switch">
+                  <input class="form-check-input" type="checkbox" id="hasCta" name="has_call_to_action" value="1" {% if sample.has_call_to_action %}checked{% endif %}>
+                  <label class="form-check-label fw-bold text-white" for="hasCta" style="font-size: 0.8125rem;">Call To Action</label>
+                  <div class="text-muted" style="font-size: 0.6875rem;">SHAP +0.11 Impact</div>
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="form-check form-switch">
+                  <input class="form-check-input" type="checkbox" id="retargetingFlag" name="retargeting_flag" value="1" {% if sample.retargeting_flag %}checked{% endif %}>
+                  <label class="form-check-label fw-bold text-white" for="retargetingFlag" style="font-size: 0.8125rem;">Retargeting</label>
+                  <div class="text-muted" style="font-size: 0.6875rem;">Lowers effective CPA</div>
+                </div>
+              </div>
+            </div>
+
+            <input type="hidden" name="creative_size" value="1080x1080">
+            <input type="hidden" name="ad_copy_length" value="Short">
+            <input type="hidden" name="operating_system" value="Windows">
+            <input type="hidden" name="budget_tier" value="Medium">
+
+            <!-- Submit Button -->
+            <button type="submit" class="btn btn-accent-custom w-100 py-3 justify-content-center fs-6" id="btnOptimize">
+              <i class="bi bi-lightning-charge-fill fs-5"></i>
+              <span>Run Campaign Optimization</span>
+            </button>
+          </form>
+        </div>
+
+        <!-- Right: Real Optimizer Results -->
+        <div class="col-12 col-xl-7">
+          <!-- Initial Empty State -->
+          <div id="optimizerEmptyState" class="empty-state-box">
+            <div class="empty-state-icon">
+              <i class="bi bi-cpu-fill"></i>
+            </div>
+            <h5 class="fw-bold text-white mb-2">Ready to Run AI Multi-Objective Optimization</h5>
+            <p class="text-secondary mx-auto" style="max-width: 480px; font-size: 0.875rem;">
+              Click <strong>"Run Campaign Optimization"</strong> to evaluate candidate variations across channels, placements, and creative formats using our 4 trained machine learning models.
+            </p>
+          </div>
+
+          <!-- Loading Skeleton -->
+          <div id="optimizerLoadingState" class="d-none">
+            <div class="p-4 mb-3 rounded-3" style="background: rgba(14, 15, 24, 0.6); border: 1px solid var(--glass-border);">
+              <div class="skeleton mb-3" style="height: 28px; width: 60%;"></div>
+              <div class="skeleton mb-4" style="height: 18px; width: 85%;"></div>
+              <div class="row g-3">
+                <div class="col-3"><div class="skeleton" style="height: 75px;"></div></div>
+                <div class="col-3"><div class="skeleton" style="height: 75px;"></div></div>
+                <div class="col-3"><div class="skeleton" style="height: 75px;"></div></div>
+                <div class="col-3"><div class="skeleton" style="height: 75px;"></div></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Active Results Container -->
+          <div id="optimizerResults" class="d-none">
+            <!-- Winner Hero Card -->
+            <div class="recommendation-hero-card">
+              <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-3">
+                <div>
+                  <div class="recommendation-badge-pill mb-2">
+                    <i class="bi bi-trophy-fill"></i> Top Recommended AI Strategy
+                  </div>
+                  <h3 class="text-white mb-1" id="recStrategyName">AI-Recommended Optimization</h3>
+                  <div class="text-secondary" style="font-size: 0.8rem;" id="recPriorityNote">
+                    Multi-Objective Composite Score
+                  </div>
+                </div>
+                <div class="score-dial" id="recScoreDial" style="--score-pct: 92;">
+                  <div class="score-dial-inner">
+                    <span class="num" id="recCompositeScore">92</span>
+                    <span class="lbl">Score</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Deltas Row -->
+              <div class="row g-2 mt-2 pt-3 border-top border-secondary border-opacity-25 font-mono">
+                <div class="col-6 col-md-3">
+                  <div class="text-muted" style="font-size: 0.6875rem;">UPLIFT IN ROI</div>
+                  <div class="fs-5 fw-bold text-success" id="deltaRoi">+0.0%</div>
+                </div>
+                <div class="col-6 col-md-3">
+                  <div class="text-muted" style="font-size: 0.6875rem;">ADDITIONAL REVENUE</div>
+                  <div class="fs-5 fw-bold text-info" id="deltaRevenue">+₹0.00</div>
+                </div>
+                <div class="col-6 col-md-3">
+                  <div class="text-muted" style="font-size: 0.6875rem;">CONV RATE DELTA</div>
+                  <div class="fs-5 fw-bold text-warning" id="deltaConvRate">+0.0%</div>
+                </div>
+                <div class="col-6 col-md-3">
+                  <div class="text-muted" style="font-size: 0.6875rem;">SUCCESS PROBABILITY</div>
+                  <div class="fs-5 fw-bold text-white" id="deltaSuccessProb">98.5%</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Comparison Box: Baseline vs Recommended -->
+            <div class="row g-3 mb-4">
+              <div class="col-12 col-md-6">
+                <div class="comparison-box">
+                  <div class="d-flex align-items-center justify-content-between mb-2">
+                    <span class="badge-custom badge-navy">Your Baseline Input</span>
+                    <span class="text-muted font-mono" style="font-size: 0.75rem;">Score: <span id="baseScore">0</span></span>
+                  </div>
+                  <div class="mb-2">
+                    <div class="text-muted font-mono" style="font-size: 0.7rem;">PREDICTED ROI</div>
+                    <div class="fs-4 fw-bold text-white font-mono" id="baseRoi">0.0%</div>
+                  </div>
+                  <div class="row g-2 text-secondary" style="font-size: 0.8rem;">
+                    <div class="col-6">Revenue: <strong id="baseRevenue" class="text-white font-mono">₹0</strong></div>
+                    <div class="col-6">Conversions: <strong id="baseConversions" class="text-white font-mono">0</strong></div>
+                    <div class="col-6">Conv Rate: <strong id="baseConvRate" class="text-white font-mono">0%</strong></div>
+                    <div class="col-6">CPA: <strong id="baseCpa" class="text-white font-mono">₹0</strong></div>
+                    <div class="col-12 mt-2 pt-2 border-top border-secondary border-opacity-25">
+                      <span class="text-muted">Targeting:</span> <span id="baseSummary" class="text-white">Facebook • Video</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-12 col-md-6">
+                <div class="comparison-box is-recommended">
+                  <div class="recommended-ribbon"><i class="bi bi-star-fill me-1"></i> Recommended</div>
+                  <div class="d-flex align-items-center justify-content-between mb-2">
+                    <span class="badge-custom badge-emerald">AI Recommended</span>
+                    <span class="text-success font-mono fw-bold" style="font-size: 0.75rem;">Score: <span id="recScore">0</span></span>
+                  </div>
+                  <div class="mb-2">
+                    <div class="text-muted font-mono" style="font-size: 0.7rem;">PREDICTED ROI</div>
+                    <div class="fs-4 fw-bold text-success font-mono" id="recRoi">+0.0%</div>
+                  </div>
+                  <div class="row g-2 text-secondary" style="font-size: 0.8rem;">
+                    <div class="col-6">Revenue: <strong id="recRevenue" class="text-white font-mono">₹0</strong></div>
+                    <div class="col-6">Conversions: <strong id="recConversions" class="text-white font-mono">0</strong></div>
+                    <div class="col-6">Conv Rate: <strong id="recConvRate" class="text-white font-mono">0%</strong></div>
+                    <div class="col-6">CPA: <strong id="recCpa" class="text-white font-mono">₹0</strong></div>
+                    <div class="col-12 mt-2 pt-2 border-top border-secondary border-opacity-25">
+                      <span class="text-muted">Targeting:</span> <span id="recSummary" class="text-white">Optimized</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Explainability Insights -->
+            <div class="mb-4">
+              <h6 class="text-white fw-bold mb-3 font-mono" style="font-size: 0.85rem;">
+                <i class="bi bi-lightbulb-fill text-warning me-1"></i> WHY THIS STRATEGY RANKS HIGHEST (SHAP GROUNDED)
+              </h6>
+              <div id="explainabilityContainer">
+                <!-- Injected by optimizer.js -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BENCHMARK DATASET RECORDS SAMPLE TABLE -->
+  <div class="dashboard-card mb-4">
+    <div class="card-header-custom">
+      <h5><i class="bi bi-clock-history text-primary"></i> Benchmark Dataset Records (Validation Sample)</h5>
+      <span class="badge-custom badge-navy font-mono">10,000 Historic Campaigns</span>
+    </div>
+    <div class="card-body-custom p-0">
+      <div class="table-responsive">
+        <table class="table-custom">
+          <thead>
+            <tr>
+              <th>Campaign ID</th>
+              <th>Objective</th>
+              <th>Platform</th>
+              <th>Industry</th>
+              <th>Spend (INR)</th>
+              <th>Actual Revenue</th>
+              <th>Actual ROI</th>
+              <th>Conv. Rate</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="recentCampaignsTableBody">
+            <tr>
+              <td colspan="9" class="text-center py-4">
+                <span class="spinner-border spinner-border-sm text-primary me-2"></span>
+                Loading benchmark dataset records...
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<!-- Dashboard & Optimizer Scripts -->
+<script src="{{ url_for('static', filename='js/optimizer.js') }}"></script>
+<script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+{% endblock %}

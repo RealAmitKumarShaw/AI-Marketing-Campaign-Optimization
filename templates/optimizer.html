@@ -1,0 +1,435 @@
+{% extends "base.html" %}
+
+{% block title %}AI Campaign Optimizer | Facet Glass Recommendation Engine{% endblock %}
+{% block page_title %}AI Campaign Optimizer{% endblock %}
+{% block page_subtitle %}Multi-objective campaign optimization and explainable recommendations{% endblock %}
+
+{% block content %}
+<div class="app-content">
+  <!-- Top Header Banner -->
+  <div class="page-header-banner mb-4">
+    <div class="row align-items-center">
+      <div class="col-12 col-lg-8">
+        <div class="d-flex align-items-center gap-2 mb-2">
+          <span class="badge-custom badge-emerald"><i class="bi bi-stars"></i> Member 4 Main Feature</span>
+          <span class="badge-custom badge-blue"><i class="bi bi-cpu-fill"></i> Multi-Objective Ensemble</span>
+        </div>
+        <h2 class="text-white mb-2" style="font-size: 1.65rem;">Intelligent Campaign Optimizer & Strategy Ranker</h2>
+        <p class="text-secondary mb-0" style="font-size: 0.875rem;">
+          Configure your campaign parameters below. Our optimization engine evaluates candidate variations across marketing channels, ad placements, and creative formats using trained models, then ranks feasible alternatives using a multi-objective scoring formula.
+        </p>
+      </div>
+      <div class="col-12 col-lg-4 text-lg-end mt-3 mt-lg-0">
+        <span class="text-muted d-block mb-1 font-mono" style="font-size: 0.725rem;">Quick Pre-fill Benchmark:</span>
+        <div class="btn-group shadow-sm">
+          <button type="button" class="btn btn-sm btn-outline-custom" onclick="loadSampleToForm('standard')">SaaS</button>
+          <button type="button" class="btn btn-sm btn-outline-custom" onclick="loadSampleToForm('ecommerce')">E-Commerce</button>
+          <button type="button" class="btn btn-sm btn-outline-custom" onclick="loadSampleToForm('b2b')">B2B Lead</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row g-4">
+    <!-- Left Column: Configuration Form -->
+    <div class="col-12 col-xl-5">
+      <div class="dashboard-card">
+        <div class="card-header-custom">
+          <h5><i class="bi bi-sliders text-primary"></i> Campaign Configuration</h5>
+          <span class="badge-custom badge-navy font-mono">Real Model Inputs</span>
+        </div>
+        <div class="card-body-custom">
+          <form id="optimizerForm" onsubmit="handleOptimizeSubmit(event)">
+            <!-- Strategy Priority Selector -->
+            <div class="mb-4 p-3 rounded-3" style="background: rgba(14, 15, 24, 0.85); border: 1px solid var(--glass-border);">
+              <label class="form-label-custom">
+                <span>Optimization Priority</span>
+                <span class="sub text-primary">Defines Scoring Weights</span>
+              </label>
+              <select class="form-select-custom" id="optPriority" name="priority">
+                <option value="balanced" selected>Balanced Performance (35% Success, 30% ROI, 20% Rev, 15% Conv)</option>
+                <option value="max_roi">Maximum ROI & Capital Efficiency (50% ROI, 25% Success)</option>
+                <option value="max_revenue">Revenue Scale & Market Capture (45% Revenue, 20% ROI)</option>
+                <option value="low_risk">Low Risk / Highest Probability of Success (55% Success)</option>
+              </select>
+            </div>
+
+            <!-- Section 1: Campaign Identity -->
+            <div class="mb-3">
+              <label class="form-label-custom" for="campaignName">
+                <span>Campaign Name</span>
+              </label>
+              <input type="text" class="form-control-custom" id="campaignName" name="campaign_name" value="{{ sample.campaign_name }}" required>
+            </div>
+
+            <div class="row g-2 mb-3">
+              <div class="col-6">
+                <label class="form-label-custom" for="campaignObjective">Campaign Objective</label>
+                <select class="form-select-custom" id="campaignObjective" name="campaign_objective">
+                  {% for obj in options.campaign_objective %}
+                    <option value="{{ obj }}" {% if obj == sample.campaign_objective %}selected{% endif %}>{{ obj }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="col-6">
+                <label class="form-label-custom" for="industryVertical">Industry Vertical</label>
+                <select class="form-select-custom" id="industryVertical" name="industry_vertical">
+                  {% for ind in options.industry_vertical %}
+                    <option value="{{ ind }}" {% if ind == sample.industry_vertical %}selected{% endif %}>{{ ind }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+
+            <!-- Section 2: Channel & Placement -->
+            <div class="row g-2 mb-3">
+              <div class="col-6">
+                <label class="form-label-custom" for="platform">Marketing Channel</label>
+                <select class="form-select-custom" id="platform" name="platform">
+                  {% for plat in options.platform %}
+                    <option value="{{ plat }}" {% if plat == sample.platform %}selected{% endif %}>{{ plat }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="col-6">
+                <label class="form-label-custom" for="adPlacement">Ad Placement</label>
+                <select class="form-select-custom" id="adPlacement" name="ad_placement">
+                  {% for plc in options.ad_placement %}
+                    <option value="{{ plc }}" {% if plc == sample.ad_placement %}selected{% endif %}>{{ plc }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+
+            <!-- Section 3: Creative & Format -->
+            <div class="row g-2 mb-3">
+              <div class="col-6">
+                <label class="form-label-custom" for="creativeFormat">Creative Format</label>
+                <select class="form-select-custom" id="creativeFormat" name="creative_format">
+                  {% for fmt in options.creative_format %}
+                    <option value="{{ fmt }}" {% if fmt == sample.creative_format %}selected{% endif %}>{{ fmt }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="col-6">
+                <label class="form-label-custom" for="creativeEmotion">Creative Emotion</label>
+                <select class="form-select-custom" id="creativeEmotion" name="creative_emotion">
+                  {% for emo in options.creative_emotion %}
+                    <option value="{{ emo }}" {% if emo == sample.creative_emotion %}selected{% endif %}>{{ emo }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+
+            <!-- Section 4: Target Audience & Targeting -->
+            <div class="row g-2 mb-3">
+              <div class="col-6">
+                <label class="form-label-custom" for="targetAge">Target Age</label>
+                <select class="form-select-custom" id="targetAge" name="target_audience_age">
+                  {% for age in options.target_audience_age %}
+                    <option value="{{ age }}" {% if age == sample.target_audience_age %}selected{% endif %}>{{ age }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="col-6">
+                <label class="form-label-custom" for="targetGender">Target Gender</label>
+                <select class="form-select-custom" id="targetGender" name="target_audience_gender">
+                  {% for g in options.target_audience_gender %}
+                    <option value="{{ g }}" {% if g == sample.target_audience_gender %}selected{% endif %}>{{ g }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+
+            <div class="row g-2 mb-3">
+              <div class="col-6">
+                <label class="form-label-custom" for="interestCat">Audience Interest</label>
+                <select class="form-select-custom" id="interestCat" name="audience_interest_category">
+                  {% for cat in options.audience_interest_category %}
+                    <option value="{{ cat }}" {% if cat == sample.audience_interest_category %}selected{% endif %}>{{ cat }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="col-6">
+                <label class="form-label-custom" for="incomeBracket">Income Bracket</label>
+                <select class="form-select-custom" id="incomeBracket" name="income_bracket">
+                  {% for inc in options.income_bracket %}
+                    <option value="{{ inc }}" {% if inc == sample.income_bracket %}selected{% endif %}>{{ inc }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+
+            <div class="row g-2 mb-3">
+              <div class="col-6">
+                <label class="form-label-custom" for="deviceType">Device Targeting</label>
+                <select class="form-select-custom" id="deviceType" name="device_type">
+                  {% for dev in options.device_type %}
+                    <option value="{{ dev }}" {% if dev == sample.device_type %}selected{% endif %}>{{ dev }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="col-6">
+                <label class="form-label-custom" for="purchaseIntent">Purchase Intent</label>
+                <select class="form-select-custom" id="purchaseIntent" name="purchase_intent_score">
+                  {% for pi in options.purchase_intent_score %}
+                    <option value="{{ pi }}" {% if pi == sample.purchase_intent_score %}selected{% endif %}>{{ pi }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+
+            <!-- Section 5: Budget, Duration, and Flags -->
+            <div class="mb-3">
+              <label class="form-label-custom" for="adSpend">
+                <span>Campaign Budget (INR ₹)</span>
+                <span class="sub text-primary fw-bold font-mono" id="adSpendDisplay">₹5,000.00</span>
+              </label>
+              <div class="input-group">
+                <span class="input-group-text-custom">₹</span>
+                <input type="number" class="form-control-custom" id="adSpend" name="ad_spend" value="{{ sample.ad_spend }}" min="500" max="100000" step="500" oninput="updateSpendDisplay(this.value)" required>
+              </div>
+              <div class="d-flex gap-1 mt-1">
+                <button type="button" class="btn btn-sm btn-outline-custom py-0 px-2" style="font-size: 0.7rem;" onclick="setBudget(3000)">₹3k</button>
+                <button type="button" class="btn btn-sm btn-outline-custom py-0 px-2" style="font-size: 0.7rem;" onclick="setBudget(5000)">₹5k</button>
+                <button type="button" class="btn btn-sm btn-outline-custom py-0 px-2" style="font-size: 0.7rem;" onclick="setBudget(10000)">₹10k</button>
+                <button type="button" class="btn btn-sm btn-outline-custom py-0 px-2" style="font-size: 0.7rem;" onclick="setBudget(25000)">₹25k</button>
+              </div>
+            </div>
+
+            <div class="mb-4">
+              <label class="form-label-custom" for="campaignDay">
+                <span>Campaign Duration</span>
+                <span class="sub text-primary fw-bold font-mono" id="durationDisplay">{{ sample.campaign_day }} Days</span>
+              </label>
+              <div class="input-slider-wrap">
+                <input type="range" class="slider-custom" id="campaignDay" name="campaign_day" min="1" max="90" value="{{ sample.campaign_day }}" oninput="updateDurationDisplay(this.value)">
+                <span class="slider-value-display font-mono" id="durationValueBadge">{{ sample.campaign_day }}d</span>
+              </div>
+            </div>
+
+            <!-- Boolean Flags -->
+            <div class="row g-2 mb-4 p-3 rounded-3" style="background: rgba(14, 15, 24, 0.85); border: 1px solid var(--glass-border);">
+              <div class="col-6">
+                <div class="form-check form-switch">
+                  <input class="form-check-input" type="checkbox" id="hasCta" name="has_call_to_action" value="1" {% if sample.has_call_to_action %}checked{% endif %}>
+                  <label class="form-check-label fw-bold text-white" for="hasCta" style="font-size: 0.8125rem;">Has Call to Action</label>
+                  <div class="text-muted" style="font-size: 0.7rem;">Boosts conversion intent</div>
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="form-check form-switch">
+                  <input class="form-check-input" type="checkbox" id="retargetingFlag" name="retargeting_flag" value="1" {% if sample.retargeting_flag %}checked{% endif %}>
+                  <label class="form-check-label fw-bold text-white" for="retargetingFlag" style="font-size: 0.8125rem;">Retargeting Audience</label>
+                  <div class="text-muted" style="font-size: 0.7rem;">Lowers effective CPA</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Hidden default technical parameters to maintain model compatibility -->
+            <input type="hidden" name="creative_size" value="1080x1080">
+            <input type="hidden" name="ad_copy_length" value="Short">
+            <input type="hidden" name="operating_system" value="Windows">
+            <input type="hidden" name="budget_tier" value="Medium">
+
+            <!-- Submit Button -->
+            <button type="submit" class="btn btn-accent-custom w-100 py-3 justify-content-center fs-6" id="btnOptimize">
+              <i class="bi bi-lightning-charge-fill fs-5"></i>
+              <span>Run Campaign Optimization</span>
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Column: Results & Explainability -->
+    <div class="col-12 col-xl-7">
+      <!-- Initial Empty State -->
+      <div id="optimizerEmptyState" class="dashboard-card">
+        <div class="empty-state-box">
+          <div class="empty-state-icon">
+            <i class="bi bi-cpu-fill"></i>
+          </div>
+          <h5 class="fw-bold text-white mb-2">Ready to Optimize Your Campaign</h5>
+          <p class="text-secondary mx-auto" style="max-width: 480px; font-size: 0.875rem;">
+            Configure your parameters on the left and click <strong>"Run Campaign Optimization"</strong>. The AI engine evaluates 10+ candidate strategies using our 4 trained machine learning models and ranks the top configurations.
+          </p>
+          <div class="p-3 mx-auto text-start rounded-3 mt-4" style="max-width: 460px; background: rgba(14, 15, 24, 0.75); border: 1px solid var(--glass-border); font-size: 0.8125rem;">
+            <div class="fw-bold mb-2 text-white font-mono"><i class="bi bi-diagram-3-fill text-primary me-2"></i>Multi-Objective Strategy Flow:</div>
+            <ol class="mb-0 ps-3 text-secondary font-mono" style="line-height: 1.6; font-size: 0.75rem;">
+              <li>Input validation and empirical benchmark alignment</li>
+              <li>Conversions prediction via Gradient Boosting Regressor (log1p)</li>
+              <li>Revenue & ROI calculation using trained Random Forest & GB models</li>
+              <li>Success classification (Profit > 0) using GB Classifier</li>
+              <li>Candidate ranking and SHAP explainability synthesis</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+
+      <!-- Loading Skeleton -->
+      <div id="optimizerLoadingState" class="d-none">
+        <div class="dashboard-card p-4 mb-4">
+          <div class="skeleton mb-3" style="height: 30px; width: 60%;"></div>
+          <div class="skeleton mb-4" style="height: 18px; width: 85%;"></div>
+          <div class="row g-3">
+            <div class="col-3"><div class="skeleton" style="height: 80px;"></div></div>
+            <div class="col-3"><div class="skeleton" style="height: 80px;"></div></div>
+            <div class="col-3"><div class="skeleton" style="height: 80px;"></div></div>
+            <div class="col-3"><div class="skeleton" style="height: 80px;"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Active Optimization Results -->
+      <div id="optimizerResults" class="d-none">
+        <!-- Winner Hero Card -->
+        <div class="recommendation-hero-card">
+          <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-3">
+            <div>
+              <div class="recommendation-badge-pill mb-2">
+                <i class="bi bi-trophy-fill"></i> Top Recommended AI Strategy
+              </div>
+              <h3 class="text-white mb-1" id="recStrategyName">AI-Recommended Optimization</h3>
+              <div class="text-secondary" style="font-size: 0.8125rem;" id="recPriorityNote">
+                Multi-Objective Composite Score based on Balanced Strategy
+              </div>
+            </div>
+            <div class="d-flex align-items-center gap-3">
+              <div class="score-dial" id="recScoreDial" style="--score-pct: 92;">
+                <div class="score-dial-inner">
+                  <span class="num" id="recCompositeScore">92</span>
+                  <span class="lbl">Score</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Delta Highlights Row -->
+          <div class="row g-2 mt-2 pt-3 border-top border-secondary border-opacity-25 font-mono">
+            <div class="col-6 col-md-3">
+              <div class="text-muted" style="font-size: 0.7rem; text-transform: uppercase;">UPLIFT IN ROI</div>
+              <div class="fs-5 fw-bold text-success" id="deltaRoi">+0.0%</div>
+            </div>
+            <div class="col-6 col-md-3">
+              <div class="text-muted" style="font-size: 0.7rem; text-transform: uppercase;">ADDITIONAL REVENUE</div>
+              <div class="fs-5 fw-bold text-info" id="deltaRevenue">+₹0.00</div>
+            </div>
+            <div class="col-6 col-md-3">
+              <div class="text-muted" style="font-size: 0.7rem; text-transform: uppercase;">CONV RATE CHANGE</div>
+              <div class="fs-5 fw-bold text-warning" id="deltaConvRate">+0.0%</div>
+            </div>
+            <div class="col-6 col-md-3">
+              <div class="text-muted" style="font-size: 0.7rem; text-transform: uppercase;">PROBABILITY OF SUCCESS</div>
+              <div class="fs-5 fw-bold text-white" id="deltaSuccessProb">98.5%</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Comparison: Baseline vs Recommended Cards -->
+        <div class="row g-3 mb-4">
+          <div class="col-12 col-md-6">
+            <div class="comparison-box">
+              <div class="d-flex align-items-center justify-content-between mb-3">
+                <span class="badge-custom badge-navy">Your Input (Baseline)</span>
+                <span class="text-muted font-mono" style="font-size: 0.75rem;">Score: <span id="baseScore">0</span></span>
+              </div>
+              <div class="mb-3">
+                <div class="text-muted font-mono" style="font-size: 0.7rem;">PREDICTED ROI</div>
+                <div class="fs-4 fw-bold text-white font-mono" id="baseRoi">0.0%</div>
+              </div>
+              <div class="row g-2 text-secondary font-mono" style="font-size: 0.8125rem;">
+                <div class="col-6">Revenue: <strong id="baseRevenue" class="text-white">₹0</strong></div>
+                <div class="col-6">Conversions: <strong id="baseConversions" class="text-white">0</strong></div>
+                <div class="col-6">Conv Rate: <strong id="baseConvRate" class="text-white">0%</strong></div>
+                <div class="col-6">CPA: <strong id="baseCpa" class="text-white">₹0</strong></div>
+                <div class="col-12 mt-2 pt-2 border-top border-secondary border-opacity-25 font-sans">
+                  <span class="text-muted">Targeting:</span> <span id="baseSummary" class="text-white">Facebook • Video • Desktop</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12 col-md-6">
+            <div class="comparison-box is-recommended">
+              <div class="recommended-ribbon"><i class="bi bi-star-fill me-1"></i> Recommended</div>
+              <div class="d-flex align-items-center justify-content-between mb-3">
+                <span class="badge-custom badge-emerald">AI Recommended</span>
+                <span class="text-success font-mono fw-bold" style="font-size: 0.75rem;">Score: <span id="recScore">0</span></span>
+              </div>
+              <div class="mb-3">
+                <div class="text-muted font-mono" style="font-size: 0.7rem;">PREDICTED ROI</div>
+                <div class="fs-4 fw-bold text-success font-mono" id="recRoi">+0.0%</div>
+              </div>
+              <div class="row g-2 text-secondary font-mono" style="font-size: 0.8125rem;">
+                <div class="col-6">Revenue: <strong id="recRevenue" class="text-white">₹0</strong></div>
+                <div class="col-6">Conversions: <strong id="recConversions" class="text-white">0</strong></div>
+                <div class="col-6">Conv Rate: <strong id="recConvRate" class="text-white">0%</strong></div>
+                <div class="col-6">CPA: <strong id="recCpa" class="text-white">₹0</strong></div>
+                <div class="col-12 mt-2 pt-2 border-top border-secondary border-opacity-25 font-sans">
+                  <span class="text-muted">Targeting:</span> <span id="recSummary" class="text-white">Optimized Parameters</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Explainability Insights (SHAP-Grounded) -->
+        <div class="dashboard-card mb-4">
+          <div class="card-header-custom">
+            <h5><i class="bi bi-lightbulb-fill text-warning"></i> Why This Strategy Ranks Highest (SHAP Explainability)</h5>
+            <span class="badge-custom badge-blue font-mono">Member 3 SHAP Integration</span>
+          </div>
+          <div class="card-body-custom" id="explainabilityContainer">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+
+        <!-- Alternative Strategic Options -->
+        <div class="dashboard-card mb-4">
+          <div class="card-header-custom">
+            <h5><i class="bi bi-shuffle text-primary"></i> Alternative Strategic Options</h5>
+            <span class="badge-custom badge-navy font-mono">Explore Variations</span>
+          </div>
+          <div class="card-body-custom">
+            <div class="row g-3" id="alternativeStrategiesContainer">
+              <!-- Populated by JS -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Full Ranked Candidates Table -->
+        <div class="dashboard-card">
+          <div class="card-header-custom">
+            <h5><i class="bi bi-list-ol text-primary"></i> All Evaluated Candidate Variations</h5>
+          </div>
+          <div class="card-body-custom p-0">
+            <div class="table-responsive">
+              <table class="table-custom">
+                <thead>
+                  <tr>
+                    <th>Rank & Strategy</th>
+                    <th>Platform</th>
+                    <th>Format</th>
+                    <th>ROI (%)</th>
+                    <th>Revenue (₹)</th>
+                    <th>Success Prob</th>
+                    <th>Composite Score</th>
+                  </tr>
+                </thead>
+                <tbody id="rankedCandidatesTableBody">
+                  <!-- Populated by JS -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/optimizer.js') }}"></script>
+{% endblock %}

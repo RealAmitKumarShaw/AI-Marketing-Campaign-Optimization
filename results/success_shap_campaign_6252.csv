@@ -1,0 +1,102 @@
+Feature,Feature_Value,SHAP_Value,Absolute_SHAP
+num__bounce_rate,1.2728395714961027,-0.9766124700859655,0.9766124700859655
+cat__device_type_Desktop,0.0,-0.4710274847107939,0.4710274847107939
+num__actual_cpc,0.6008874930267494,-0.4665943897143006,0.4665943897143006
+num__quality_score,-1.62689758060276,-0.24893272830173374,0.24893272830173374
+cat__industry_vertical_E-commerce,0.0,0.2229150009062141,0.2229150009062141
+cat__campaign_objective_Brand Awareness,0.0,0.1820320909982547,0.1820320909982547
+cat__purchase_intent_score_Low,1.0,-0.15352001531980933,0.15352001531980933
+cat__income_bracket_<$50K,0.0,0.15174953010398895,0.15174953010398895
+cat__creative_format_Video,0.0,-0.14273649724200368,0.14273649724200368
+num__impressions,-0.4086333602134039,0.11833881289698184,0.11833881289698184
+cat__income_bracket_$50K-$100K,1.0,-0.11641428783535958,0.11641428783535958
+cat__has_call_to_action_True,1.0,0.10974697437137365,0.10974697437137365
+num__campaign_day,-0.051986367278797185,0.10735130988061428,0.10735130988061428
+cat__retargeting_flag_False,1.0,-0.10368834306718781,0.10368834306718781
+cat__day_of_week_Saturday,0.0,0.09599497658200562,0.09599497658200562
+cat__industry_vertical_Education,1.0,-0.09466365177184344,0.09466365177184344
+cat__industry_vertical_Finance,0.0,-0.08897445058450103,0.08897445058450103
+cat__purchase_intent_score_High,0.0,-0.08485254855826498,0.08485254855826498
+cat__has_call_to_action_False,0.0,0.0507209905795753,0.0507209905795753
+cat__campaign_objective_Engagement,0.0,0.04523035211488605,0.04523035211488605
+cat__device_type_Mobile,1.0,-0.0451617977488786,0.0451617977488786
+cat__income_bracket_>$200K,0.0,-0.03797720871865749,0.03797720871865749
+cat__retargeting_flag_True,0.0,-0.03222646410576999,0.03222646410576999
+cat__campaign_objective_Conversions,0.0,-0.03108101294375956,0.03108101294375956
+cat__industry_vertical_Healthcare,0.0,-0.03016995083540678,0.03016995083540678
+num__quarter,0.5217515658524413,-0.02675562473013997,0.02675562473013997
+cat__campaign_objective_Lead Generation,1.0,0.026377465445548295,0.026377465445548295
+cat__industry_vertical_Gaming,0.0,0.02626154113560915,0.02626154113560915
+num__avg_session_duration_seconds,0.9953736215308447,0.022743313619866968,0.022743313619866968
+num__creative_age_days,-1.7028985323436816,0.019221540251746775,0.019221540251746775
+cat__day_of_week_Sunday,0.0,0.017788499277085066,0.017788499277085066
+cat__creative_format_Text,0.0,0.014953411463648082,0.014953411463648082
+num__start_month,0.791001046864448,0.01408852321561426,0.01408852321561426
+cat__platform_Google Ads,1.0,0.010813676966354251,0.010813676966354251
+cat__industry_vertical_SaaS,0.0,0.009325677305459976,0.009325677305459976
+cat__creative_emotion_Joy,0.0,-0.0051744521036744115,0.0051744521036744115
+cat__platform_Facebook,0.0,-0.004464009366929531,0.004464009366929531
+cat__platform_TikTok,0.0,0.0028346442617475987,0.0028346442617475987
+cat__platform_LinkedIn,0.0,0.0025683210603892805,0.0025683210603892805
+num__pages_per_session,-0.09906523009566096,-0.0021632779669016598,0.0021632779669016598
+cat__audience_interest_category_Students,0.0,0.0017580460011959076,0.0017580460011959076
+cat__income_bracket_$100K-$200K,0.0,-0.0006549357529729605,0.0006549357529729605
+num__hour_of_day,1.2241613178820767,0.0005609574168920516,0.0005609574168920516
+cat__ad_placement_Search,0.0,0.0,0.0
+cat__ad_placement_Sidebar,1.0,0.0,0.0
+cat__ad_placement_Display Network,0.0,0.0,0.0
+cat__platform_Twitter,0.0,0.0,0.0
+cat__ad_placement_In-Stream Video,0.0,0.0,0.0
+cat__ad_placement_Feed,0.0,0.0,0.0
+num__start_day,1.6543773422066637,0.0,0.0
+num__start_year,-0.9700882508674049,0.0,0.0
+cat__campaign_objective_App Installs,0.0,0.0,0.0
+cat__platform_Instagram,0.0,0.0,0.0
+cat__operating_system_iOS,0.0,0.0,0.0
+cat__operating_system_Windows,1.0,0.0,0.0
+cat__operating_system_Other,0.0,0.0,0.0
+cat__operating_system_Android,0.0,0.0,0.0
+cat__device_type_Tablet,0.0,0.0,0.0
+cat__ad_placement_Stories,0.0,0.0,0.0
+cat__operating_system_macOS,0.0,0.0,0.0
+cat__creative_format_Interactive,0.0,0.0,0.0
+cat__creative_size_1200x628,0.0,0.0,0.0
+cat__creative_size_1920x1080,1.0,0.0,0.0
+cat__creative_size_300x250,0.0,0.0,0.0
+cat__creative_size_320x50,0.0,0.0,0.0
+cat__creative_size_728x90,0.0,0.0,0.0
+cat__creative_format_Image,1.0,0.0,0.0
+cat__creative_format_Story,0.0,0.0,0.0
+cat__creative_format_Carousel,0.0,0.0,0.0
+cat__target_audience_gender_Female,0.0,0.0,0.0
+cat__target_audience_gender_All,0.0,0.0,0.0
+cat__target_audience_age_65+,0.0,0.0,0.0
+cat__target_audience_age_55-64,1.0,0.0,0.0
+cat__target_audience_age_45-54,0.0,0.0,0.0
+cat__target_audience_age_35-44,0.0,0.0,0.0
+cat__target_audience_age_25-34,0.0,0.0,0.0
+cat__target_audience_age_18-24,0.0,0.0,0.0
+cat__creative_emotion_Urgency,0.0,0.0,0.0
+cat__creative_emotion_Trust,0.0,0.0,0.0
+cat__creative_emotion_Neutral,0.0,0.0,0.0
+cat__creative_emotion_Fear,1.0,0.0,0.0
+cat__creative_emotion_Curiosity,0.0,0.0,0.0
+cat__ad_copy_length_Long,0.0,0.0,0.0
+cat__ad_copy_length_Medium,1.0,0.0,0.0
+cat__ad_copy_length_Short,0.0,0.0,0.0
+cat__creative_size_1080x1080,0.0,0.0,0.0
+cat__purchase_intent_score_Medium,0.0,0.0,0.0
+cat__target_audience_gender_Male,1.0,0.0,0.0
+cat__audience_interest_category_Gamers,1.0,0.0,0.0
+cat__audience_interest_category_Health & Fitness,0.0,0.0,0.0
+cat__audience_interest_category_Tech Enthusiasts,0.0,0.0,0.0
+cat__audience_interest_category_Shoppers,0.0,0.0,0.0
+cat__audience_interest_category_Business Professionals,0.0,0.0,0.0
+cat__day_of_week_Wednesday,0.0,0.0,0.0
+cat__day_of_week_Tuesday,0.0,0.0,0.0
+cat__day_of_week_Thursday,0.0,0.0,0.0
+cat__day_of_week_Friday,0.0,0.0,0.0
+cat__day_of_week_Monday,1.0,0.0,0.0
+cat__budget_tier_High,0.0,0.0,0.0
+cat__budget_tier_Low,0.0,0.0,0.0
+cat__budget_tier_Medium,1.0,0.0,0.0

@@ -1,0 +1,241 @@
+{% extends "base.html" %}
+
+{% block title %}Executive Reports & Model Audit | AI Marketing Campaign Optimization{% endblock %}
+{% block page_title %}Reports & System Validation{% endblock %}
+{% block page_subtitle %}Comprehensive ML Model Performance, Feature Importance & Strategic Marketing Guidelines{% endblock %}
+
+{% block content %}
+<div class="app-content">
+  <div class="page-header-banner mb-4">
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
+      <div>
+        <div class="d-flex align-items-center gap-2 mb-2">
+          <span class="badge-custom badge-blue font-mono"><i class="bi bi-file-earmark-check-fill"></i> System Audit</span>
+          <span class="badge-custom badge-emerald font-mono"><i class="bi bi-check-all"></i> All 4 Models Validated</span>
+        </div>
+        <h2 class="text-white mb-1" style="font-size: 1.65rem;">Executive Campaign Intelligence Report</h2>
+        <p class="text-secondary mb-0" style="font-size: 0.875rem; max-width: 700px;">
+          Comprehensive evaluation of trained machine learning models, empirical benchmarks, SHAP explainability rankings, and strategic recommendations for digital advertising deployments.
+        </p>
+      </div>
+      <div class="d-flex gap-2">
+        <button type="button" class="btn btn-outline-custom" onclick="window.print()">
+          <i class="bi bi-printer-fill me-1"></i> Print / Export PDF
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Team Workflow & Responsibilities Architecture -->
+  <div class="dashboard-card mb-4">
+    <div class="card-header-custom">
+      <h5><i class="bi bi-diagram-3-fill text-primary"></i> Team Workflow & Module Architecture</h5>
+      <span class="badge-custom badge-navy font-mono">Completed System Pipeline</span>
+    </div>
+    <div class="card-body-custom">
+      <div class="row g-3">
+        <div class="col-12 col-md-3">
+          <div class="p-3 rounded-3 h-100" style="background: rgba(14, 15, 24, 0.75); border: 1px solid var(--glass-border);">
+            <span class="badge-custom badge-blue mb-2 font-mono">Member 1</span>
+            <h6 class="fw-bold text-white mb-1">Data Preprocessing & ROI</h6>
+            <p class="text-secondary mb-2" style="font-size: 0.75rem;">Cleaned dataset, engineered date features, handled leakage, and trained Random Forest ROI regressor.</p>
+            <div class="font-mono text-white" style="font-size: 0.75rem;"><strong>R²: 0.688</strong> • MAE: 255.8</div>
+          </div>
+        </div>
+        <div class="col-12 col-md-3">
+          <div class="p-3 rounded-3 h-100" style="background: rgba(14, 15, 24, 0.75); border: 1px solid var(--glass-border);">
+            <span class="badge-custom badge-violet mb-2 font-mono">Member 2</span>
+            <h6 class="fw-bold text-white mb-1">Revenue & Conversion</h6>
+            <p class="text-secondary mb-2" style="font-size: 0.75rem;">Trained Gradient Boosting models with log1p conversion transforms and parameter tuning.</p>
+            <div class="font-mono text-white" style="font-size: 0.75rem;"><strong>R²: 0.741</strong> • Conv R²: 0.756</div>
+          </div>
+        </div>
+        <div class="col-12 col-md-3">
+          <div class="p-3 rounded-3 h-100" style="background: rgba(14, 15, 24, 0.75); border: 1px solid var(--glass-border);">
+            <span class="badge-custom badge-orange mb-2 font-mono">Member 3</span>
+            <h6 class="fw-bold text-white mb-1">Success & Explainability</h6>
+            <p class="text-secondary mb-2" style="font-size: 0.75rem;">Created profit>0 target classification with 0.60 threshold and SHAP tree explainability analysis.</p>
+            <div class="font-mono text-white" style="font-size: 0.75rem;"><strong>Acc: 89.65%</strong> • SHAP Waterfall</div>
+          </div>
+        </div>
+        <div class="col-12 col-md-3">
+          <div class="p-3 rounded-3 h-100" style="background: rgba(22, 26, 42, 0.85); border: 1px solid rgba(54, 214, 126, 0.4);">
+            <span class="badge-custom badge-emerald mb-2 font-mono">Member 4 (Delivered)</span>
+            <h6 class="fw-bold text-white mb-1">Optimization & 3D Glass Dashboard</h6>
+            <p class="text-secondary mb-2" style="font-size: 0.75rem;">Multi-objective optimization scoring, What-If simulator, comparison engine, and Three.js 3D WebGL dashboard.</p>
+            <div class="font-mono text-success" style="font-size: 0.75rem;"><strong>Integrated Full-Stack</strong></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Model Performance Audit Matrix -->
+  <div class="dashboard-card mb-4">
+    <div class="card-header-custom">
+      <h5><i class="bi bi-shield-check text-success"></i> Model Performance & Verification Audit</h5>
+      <span class="badge-custom badge-emerald font-mono">Verified Artifacts</span>
+    </div>
+    <div class="card-body-custom p-0">
+      <div class="table-responsive">
+        <table class="table-custom font-mono">
+          <thead>
+            <tr>
+              <th>Model Designation</th>
+              <th>Algorithm</th>
+              <th>Target Variable</th>
+              <th>Input Features</th>
+              <th>Primary Metrics</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="fw-bold text-white font-sans">ROI Prediction</td>
+              <td class="font-sans">Tuned Random Forest Regressor (200 trees)</td>
+              <td><code>ROI (%)</code></td>
+              <td>39 Features</td>
+              <td>R²: 0.6883 | MAE: 255.78 | RMSE: 1011.3</td>
+              <td><span class="badge-custom badge-emerald"><i class="bi bi-check-circle-fill"></i> Operational</span></td>
+            </tr>
+            <tr>
+              <td class="fw-bold text-white font-sans">Revenue Prediction</td>
+              <td class="font-sans">Tuned Gradient Boosting Regressor</td>
+              <td><code>revenue (₹)</code></td>
+              <td>39 Features</td>
+              <td>R²: 0.7409 | Test MAE: 10,623 | CV R²: 0.816</td>
+              <td><span class="badge-custom badge-emerald"><i class="bi bi-check-circle-fill"></i> Operational</span></td>
+            </tr>
+            <tr>
+              <td class="fw-bold text-white font-sans">Conversion Prediction</td>
+              <td class="font-sans">Gradient Boosting Regressor (log1p transform)</td>
+              <td><code>conversions</code></td>
+              <td>36 Features</td>
+              <td>R²: 0.7559 | MAE: 21.80 | RMSE: 103.76</td>
+              <td><span class="badge-custom badge-emerald"><i class="bi bi-check-circle-fill"></i> Operational</span></td>
+            </tr>
+            <tr>
+              <td class="fw-bold text-white font-sans">Success Classifier</td>
+              <td class="font-sans">Gradient Boosting Classifier (th = 0.60)</td>
+              <td><code>profit > 0</code></td>
+              <td>32 Features</td>
+              <td>Accuracy @0.5: 89.65% | Accuracy @0.6: 89.25%</td>
+              <td><span class="badge-custom badge-emerald"><i class="bi bi-check-circle-fill"></i> Operational</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- SHAP Explainability & Feature Drivers -->
+  <div class="row g-4 mb-4">
+    <div class="col-12 col-lg-6">
+      <div class="dashboard-card h-100">
+        <div class="card-header-custom">
+          <h5><i class="bi bi-bar-chart-steps text-primary"></i> Top SHAP Success Drivers (Member 3)</h5>
+          <span class="badge-custom badge-navy font-mono">results/success_shap_feature_importance.csv</span>
+        </div>
+        <div class="card-body-custom p-0">
+          <div class="table-responsive">
+            <table class="table-custom font-mono">
+              <thead>
+                <tr>
+                  <th>Rank</th>
+                  <th>Feature Name</th>
+                  <th>Mean |SHAP| Value</th>
+                  <th>Directional Impact</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="text-muted">#1</td>
+                  <td class="fw-bold text-white font-sans">Bounce Rate</td>
+                  <td class="text-primary">0.6093</td>
+                  <td><span class="badge-custom badge-rose">Lower = Highly Positive</span></td>
+                </tr>
+                <tr>
+                  <td class="text-muted">#2</td>
+                  <td class="fw-bold text-white font-sans">Device: Desktop</td>
+                  <td class="text-primary">0.4947</td>
+                  <td><span class="badge-custom badge-emerald">Desktop = Strong Positive</span></td>
+                </tr>
+                <tr>
+                  <td class="text-muted">#3</td>
+                  <td class="fw-bold text-white font-sans">Actual CPC</td>
+                  <td class="text-primary">0.4647</td>
+                  <td><span class="badge-custom badge-rose">Lower CPC = Positive</span></td>
+                </tr>
+                <tr>
+                  <td class="text-muted">#4</td>
+                  <td class="fw-bold text-white font-sans">Objective: Brand Awareness</td>
+                  <td class="text-primary">0.2601</td>
+                  <td><span class="badge-custom badge-blue">Broad Scale Reach</span></td>
+                </tr>
+                <tr>
+                  <td class="text-muted">#5</td>
+                  <td class="fw-bold text-white font-sans">Impressions Scale</td>
+                  <td class="text-primary">0.2194</td>
+                  <td><span class="badge-custom badge-emerald">Volume Positive</span></td>
+                </tr>
+                <tr>
+                  <td class="text-muted">#6</td>
+                  <td class="fw-bold text-white font-sans">Vertical: E-commerce</td>
+                  <td class="text-primary">0.2149</td>
+                  <td><span class="badge-custom badge-emerald">High Transaction Volume</span></td>
+                </tr>
+                <tr>
+                  <td class="text-muted">#7</td>
+                  <td class="fw-bold text-white font-sans">Creative: Video</td>
+                  <td class="text-primary">0.1897</td>
+                  <td><span class="badge-custom badge-emerald">Engagement Lift</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12 col-lg-6">
+      <div class="dashboard-card h-100">
+        <div class="card-header-custom">
+          <h5><i class="bi bi-journal-bookmark-fill text-primary"></i> Actionable Strategic Guidelines</h5>
+        </div>
+        <div class="card-body-custom">
+          <ul class="list-unstyled d-flex flex-column gap-3 mb-0" style="font-size: 0.875rem;">
+            <li class="d-flex align-items-start gap-2">
+              <i class="bi bi-check-circle-fill text-success fs-5 mt-1"></i>
+              <div>
+                <strong class="text-white">Prioritize Desktop Device Targeting for High-Value Conversions:</strong>
+                <div class="text-secondary">SHAP feature analysis identifies Desktop sessions as the #2 strongest positive driver of net profit, displaying significantly reduced bounce rates compared to mobile browsing.</div>
+              </div>
+            </li>
+            <li class="d-flex align-items-start gap-2">
+              <i class="bi bi-check-circle-fill text-success fs-5 mt-1"></i>
+              <div>
+                <strong class="text-white">Incorporate Active Calls-To-Action (CTA):</strong>
+                <div class="text-secondary">Campaigns with explicit CTAs demonstrate a 12.6% higher probability of profitability across all budget tiers.</div>
+              </div>
+            </li>
+            <li class="d-flex align-items-start gap-2">
+              <i class="bi bi-check-circle-fill text-success fs-5 mt-1"></i>
+              <div>
+                <strong class="text-white">Target 30 to 45 Days Duration Flights:</strong>
+                <div class="text-secondary">Pacing data reveals that campaigns under 15 days exhibit high variance and higher CPA, while 30-45 day flights achieve optimal ROAS efficiency.</div>
+              </div>
+            </li>
+            <li class="d-flex align-items-start gap-2">
+              <i class="bi bi-check-circle-fill text-success fs-5 mt-1"></i>
+              <div>
+                <strong class="text-white">Leverage Retargeting Flag for Bottom-Funnel Intent:</strong>
+                <div class="text-secondary">Retargeting previous visitors reduces acquisition costs (CPA) by 22% compared to cold audience prospecting.</div>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

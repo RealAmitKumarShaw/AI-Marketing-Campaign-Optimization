@@ -1,0 +1,137 @@
+{% extends "base.html" %}
+
+{% block title %}Revenue Prediction | Member 2 Model Integration{% endblock %}
+{% block page_title %}Revenue Prediction{% endblock %}
+{% block page_subtitle %}Predict top-line advertising revenue using Tuned Gradient Boosting Regressor{% endblock %}
+
+{% block content %}
+<div class="app-content">
+  <div class="page-header-banner mb-4">
+    <div class="row align-items-center">
+      <div class="col-12 col-lg-8">
+        <div class="d-flex align-items-center gap-2 mb-2">
+          <span class="badge-custom badge-blue font-mono"><i class="bi bi-currency-rupee"></i> Member 2 Model Integration</span>
+          <span class="badge-custom badge-emerald font-mono"><i class="bi bi-shield-check"></i> R²: 0.741 | MAE: 10,623</span>
+        </div>
+        <h2 class="text-white mb-2" style="font-size: 1.65rem;">Dedicated Campaign Revenue Predictor</h2>
+        <p class="text-secondary mb-0" style="font-size: 0.875rem;">
+          Forecast the gross revenue generation in Indian Rupees (₹) for upcoming digital advertising flights based on campaign spend, channels, placements, and audience targeting.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="row g-4">
+    <div class="col-12 col-xl-5">
+      <div class="dashboard-card">
+        <div class="card-header-custom">
+          <h5><i class="bi bi-sliders text-primary"></i> Revenue Parameters</h5>
+        </div>
+        <div class="card-body-custom">
+          <form id="predictionForm" onsubmit="handlePredictionSubmit(event, 'revenue')">
+            <div class="mb-3">
+              <label class="form-label-custom">Campaign Name</label>
+              <input type="text" class="form-control-custom" id="predName" name="campaign_name" value="Q4 Revenue Forecast" required>
+            </div>
+
+            <div class="row g-2 mb-3">
+              <div class="col-6">
+                <label class="form-label-custom">Channel</label>
+                <select class="form-select-custom" id="predPlatform" name="platform">
+                  {% for p in options.platform %}
+                    <option value="{{ p }}" {% if p == sample.platform %}selected{% endif %}>{{ p }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="col-6">
+                <label class="form-label-custom">Objective</label>
+                <select class="form-select-custom" id="predObjective" name="campaign_objective">
+                  {% for o in options.campaign_objective %}
+                    <option value="{{ o }}" {% if o == sample.campaign_objective %}selected{% endif %}>{{ o }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+
+            <div class="row g-2 mb-3">
+              <div class="col-6">
+                <label class="form-label-custom">Format</label>
+                <select class="form-select-custom" id="predFormat" name="creative_format">
+                  {% for f in options.creative_format %}
+                    <option value="{{ f }}" {% if f == sample.creative_format %}selected{% endif %}>{{ f }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="col-6">
+                <label class="form-label-custom">Industry</label>
+                <select class="form-select-custom" id="predIndustry" name="industry_vertical">
+                  {% for ind in options.industry_vertical %}
+                    <option value="{{ ind }}" {% if ind == sample.industry_vertical %}selected{% endif %}>{{ ind }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label-custom">
+                <span>Budget (INR ₹)</span>
+                <span class="sub text-primary fw-bold font-mono" id="predSpendDisplay">₹5,000.00</span>
+              </label>
+              <input type="number" class="form-control-custom font-mono" id="predSpend" name="ad_spend" value="5000" min="500" max="100000" step="500" oninput="updatePredSpend(this.value)" required>
+            </div>
+
+            <div class="mb-4">
+              <label class="form-label-custom">Duration: <span class="text-primary font-mono fw-bold" id="predDurDisplay">30 Days</span></label>
+              <input type="range" class="slider-custom w-100" id="predDuration" name="campaign_day" min="1" max="90" value="30" oninput="updatePredDur(this.value)">
+            </div>
+
+            <button type="submit" class="btn btn-accent-custom w-100 py-3 justify-content-center" id="btnPredict">
+              <i class="bi bi-graph-up-arrow"></i> Predict Revenue (₹)
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12 col-xl-7">
+      <div class="dashboard-card h-100">
+        <div class="card-header-custom">
+          <h5><i class="bi bi-cash-stack text-success"></i> Revenue Prediction Output</h5>
+          <span class="badge-custom badge-emerald font-mono">Tuned GB Active</span>
+        </div>
+        <div class="card-body-custom" id="predResultBody">
+          <div class="text-center py-5">
+            <i class="bi bi-currency-rupee display-1 text-primary opacity-25"></i>
+            <h3 class="mt-3 fw-bold text-white font-mono" id="predMainMetric">₹28,415.77</h3>
+            <p class="text-secondary">Expected Gross Revenue Generation</p>
+            <div class="row g-3 mt-4 text-start">
+              <div class="col-4">
+                <div class="p-3 rounded-3" style="background: rgba(14, 15, 24, 0.75); border: 1px solid var(--glass-border);">
+                  <div class="text-muted font-mono" style="font-size: 0.7rem;">ASSOCIATED ROI</div>
+                  <div class="fs-5 fw-bold text-success font-mono" id="predSubMetric1">+652.5%</div>
+                </div>
+              </div>
+              <div class="col-4">
+                <div class="p-3 rounded-3" style="background: rgba(14, 15, 24, 0.75); border: 1px solid var(--glass-border);">
+                  <div class="text-muted font-mono" style="font-size: 0.7rem;">CONVERSIONS</div>
+                  <div class="fs-5 fw-bold text-white font-mono" id="predSubMetric2">97.0</div>
+                </div>
+              </div>
+              <div class="col-4">
+                <div class="p-3 rounded-3" style="background: rgba(14, 15, 24, 0.75); border: 1px solid var(--glass-border);">
+                  <div class="text-muted font-mono" style="font-size: 0.7rem;">SUCCESS PROB.</div>
+                  <div class="fs-5 fw-bold text-warning font-mono" id="predSubMetric3">78.3%</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/predictions.js') }}"></script>
+{% endblock %}
