@@ -1,3 +1,4 @@
+
 """
 Revenue Prediction Module
 AI Marketing Campaign Optimization
@@ -37,7 +38,6 @@ if not PREPROCESSOR_PATH.exists():
     raise FileNotFoundError(
         f"Revenue preprocessor not found:\n{PREPROCESSOR_PATH}"
     )
-
 
 model = joblib.load(MODEL_PATH)
 preprocessor = joblib.load(PREPROCESSOR_PATH)
@@ -92,7 +92,6 @@ EXPECTED_FEATURES = [
 
 # ============================================================
 # CATEGORICAL FEATURES
-# EXACTLY AS TRAINING NOTEBOOK
 # ============================================================
 
 CATEGORICAL_FEATURES = [
@@ -118,7 +117,6 @@ CATEGORICAL_FEATURES = [
 
 # ============================================================
 # NUMERICAL FEATURES
-# EXACTLY AS TRAINING NOTEBOOK
 # ============================================================
 
 NUMERICAL_FEATURES = [
@@ -199,11 +197,6 @@ REQUIRED_INPUT_FEATURES = [
 def convert_quarter(value):
     """
     Convert Q1/Q2/Q3/Q4 into numeric values.
-
-    Q1 -> 1
-    Q2 -> 2
-    Q3 -> 3
-    Q4 -> 4
     """
 
     if isinstance(value, str):
@@ -223,10 +216,9 @@ def convert_quarter(value):
         try:
             return float(value)
         except ValueError:
-
             raise ValueError(
                 f"Invalid quarter: {value}. "
-                f"Use Q1, Q2, Q3 or Q4."
+                "Use Q1, Q2, Q3 or Q4."
             )
 
     return float(value)
@@ -242,7 +234,6 @@ def validate_input(campaign_data):
     """
 
     if not isinstance(campaign_data, dict):
-
         raise TypeError(
             "campaign_data must be a dictionary."
         )
@@ -254,7 +245,6 @@ def validate_input(campaign_data):
     ]
 
     if missing:
-
         raise ValueError(
             "Missing required features:\n"
             + "\n".join(
@@ -270,15 +260,12 @@ def validate_input(campaign_data):
 
 def prepare_input(campaign_data):
     """
-    Prepare input to EXACTLY match the training pipeline.
+    Prepare input to exactly match the training pipeline.
     """
 
     validate_input(campaign_data)
 
-    # --------------------------------------------------------
     # Create DataFrame
-    # --------------------------------------------------------
-
     input_df = pd.DataFrame([campaign_data])
 
     # --------------------------------------------------------
@@ -291,24 +278,15 @@ def prepare_input(campaign_data):
     )
 
     if input_df["start_date"].isna().any():
-
         raise ValueError(
             "Invalid start_date.\n"
             "Expected format: YYYY-MM-DD\n"
             "Example: 2026-01-15"
         )
 
-    input_df["start_year"] = (
-        input_df["start_date"].dt.year
-    )
-
-    input_df["start_month"] = (
-        input_df["start_date"].dt.month
-    )
-
-    input_df["start_day"] = (
-        input_df["start_date"].dt.day
-    )
+    input_df["start_year"] = input_df["start_date"].dt.year
+    input_df["start_month"] = input_df["start_date"].dt.month
+    input_df["start_day"] = input_df["start_date"].dt.day
 
     # Remove original date
     input_df.drop(
@@ -321,13 +299,11 @@ def prepare_input(campaign_data):
     # --------------------------------------------------------
 
     input_df["has_call_to_action"] = (
-        input_df["has_call_to_action"]
-        .astype(int)
+        input_df["has_call_to_action"].astype(int)
     )
 
     input_df["retargeting_flag"] = (
-        input_df["retargeting_flag"]
-        .astype(int)
+        input_df["retargeting_flag"].astype(int)
     )
 
     # --------------------------------------------------------
@@ -335,8 +311,7 @@ def prepare_input(campaign_data):
     # --------------------------------------------------------
 
     input_df["quarter"] = (
-        input_df["quarter"]
-        .apply(convert_quarter)
+        input_df["quarter"].apply(convert_quarter)
     )
 
     # --------------------------------------------------------
@@ -344,7 +319,6 @@ def prepare_input(campaign_data):
     # --------------------------------------------------------
 
     for column in NUMERICAL_FEATURES:
-
         input_df[column] = pd.to_numeric(
             input_df[column],
             errors="coerce"
@@ -352,16 +326,9 @@ def prepare_input(campaign_data):
 
     # --------------------------------------------------------
     # CATEGORICAL FEATURES
-    #
-    # IMPORTANT:
-    # Keep these as strings.
-    #
-    # purchase_intent_score is categorical according
-    # to the training notebook.
     # --------------------------------------------------------
 
     for column in CATEGORICAL_FEATURES:
-
         input_df[column] = (
             input_df[column]
             .astype(str)
@@ -372,16 +339,13 @@ def prepare_input(campaign_data):
     # CHECK NUMERICAL VALUES
     # --------------------------------------------------------
 
-    invalid_numeric = []
-
-    for column in NUMERICAL_FEATURES:
-
-        if input_df[column].isna().any():
-
-            invalid_numeric.append(column)
+    invalid_numeric = [
+        column
+        for column in NUMERICAL_FEATURES
+        if input_df[column].isna().any()
+    ]
 
     if invalid_numeric:
-
         raise ValueError(
             "Invalid numerical values found:\n"
             + "\n".join(
@@ -394,16 +358,13 @@ def prepare_input(campaign_data):
     # CHECK CATEGORICAL VALUES
     # --------------------------------------------------------
 
-    invalid_categorical = []
-
-    for column in CATEGORICAL_FEATURES:
-
-        if input_df[column].isna().any():
-
-            invalid_categorical.append(column)
+    invalid_categorical = [
+        column
+        for column in CATEGORICAL_FEATURES
+        if input_df[column].isna().any()
+    ]
 
     if invalid_categorical:
-
         raise ValueError(
             "Invalid categorical values found:\n"
             + "\n".join(
@@ -413,24 +374,40 @@ def prepare_input(campaign_data):
         )
 
     # --------------------------------------------------------
-    # CHECK FEATURE COUNT
+    # CHECK REQUIRED FEATURES
+    # --------------------------------------------------------
+
+    missing_features = [
+        column
+        for column in EXPECTED_FEATURES
+        if column not in input_df.columns
+    ]
+
+    if missing_features:
+        raise ValueError(
+            "Missing required model features:\n"
+            + "\n".join(
+                f" - {column}"
+                for column in missing_features
+            )
+        )
+
+    # --------------------------------------------------------
+    # REMOVE EXTRA FEATURES AND MATCH TRAINING ORDER
+    # --------------------------------------------------------
+
+    input_df = input_df[EXPECTED_FEATURES].copy()
+
+    # --------------------------------------------------------
+    # FINAL FEATURE COUNT VALIDATION
     # --------------------------------------------------------
 
     if len(input_df.columns) != len(EXPECTED_FEATURES):
-
         raise ValueError(
             f"Incorrect number of features.\n"
             f"Expected: {len(EXPECTED_FEATURES)}\n"
             f"Received: {len(input_df.columns)}"
         )
-
-    # --------------------------------------------------------
-    # EXACT TRAINING FEATURE ORDER
-    # --------------------------------------------------------
-
-    input_df = input_df[
-        EXPECTED_FEATURES
-    ].copy()
 
     return input_df
 
@@ -442,34 +419,16 @@ def prepare_input(campaign_data):
 def predict_revenue(campaign_data):
     """
     Predict campaign revenue.
-
-    Parameters
-    ----------
-    campaign_data : dict
-        Campaign input features.
-
-    Returns
-    -------
-    float
-        Predicted revenue.
     """
 
-    # Prepare input
-    input_df = prepare_input(
-        campaign_data
-    )
+    input_df = prepare_input(campaign_data)
 
     # --------------------------------------------------------
     # PREPROCESS
     # --------------------------------------------------------
 
     try:
-
-        processed_input = (
-            preprocessor.transform(
-                input_df
-            )
-        )
+        processed_input = preprocessor.transform(input_df)
 
     except Exception as error:
 
@@ -477,17 +436,11 @@ def predict_revenue(campaign_data):
         print("REVENUE PREPROCESSING ERROR")
         print("=" * 70)
 
-        print(
-            "\nInput shape:",
-            input_df.shape
-        )
+        print("\nInput shape:", input_df.shape)
 
-        print(
-            "\nInput columns:"
-        )
+        print("\nInput columns:")
 
         for column in input_df.columns:
-
             print(
                 f" - {column}: "
                 f"{input_df[column].iloc[0]!r} "
@@ -504,10 +457,7 @@ def predict_revenue(campaign_data):
             len(CATEGORICAL_FEATURES)
         )
 
-        print(
-            "\nOriginal error:"
-        )
-
+        print("\nOriginal error:")
         print(error)
 
         print("=" * 70)
@@ -518,15 +468,10 @@ def predict_revenue(campaign_data):
     # MODEL PREDICTION
     # --------------------------------------------------------
 
-    prediction = model.predict(
-        processed_input
-    )[0]
+    prediction = model.predict(processed_input)[0]
 
     # Revenue cannot be negative
-    prediction = max(
-        0.0,
-        float(prediction)
-    )
+    prediction = max(0.0, float(prediction))
 
     return prediction
 
@@ -558,26 +503,12 @@ if __name__ == "__main__":
     print("REVENUE PREDICTION MODULE")
     print("=" * 70)
 
-    print(
-        f"\nModel: {type(model).__name__}"
-    )
+    print(f"\nModel: {type(model).__name__}")
+    print(f"Preprocessor: {type(preprocessor).__name__}")
+    print(f"Total features: {len(EXPECTED_FEATURES)}")
+    print(f"Numerical features: {len(NUMERICAL_FEATURES)}")
+    print(f"Categorical features: {len(CATEGORICAL_FEATURES)}")
 
     print(
-        f"Preprocessor: {type(preprocessor).__name__}"
-    )
-
-    print(
-        f"Total features: {len(EXPECTED_FEATURES)}"
-    )
-
-    print(
-        f"Numerical features: {len(NUMERICAL_FEATURES)}"
-    )
-
-    print(
-        f"Categorical features: {len(CATEGORICAL_FEATURES)}"
-    )
-
-    print(
-        "\n✅ Revenue prediction module loaded successfully."
+        "\nRevenue prediction module loaded successfully."
     )
