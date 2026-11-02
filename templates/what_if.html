@@ -1,0 +1,286 @@
+{% extends "base.html" %}
+
+{% block title %}What-If Analysis | Scenario Sensitivity Simulator{% endblock %}
+{% block page_title %}What-If Analysis{% endblock %}
+{% block page_subtitle %}Test parameter variations, simulate budget adjustments, and calculate impact on ROI and Revenue{% endblock %}
+
+{% block content %}
+<div class="app-content">
+  <div class="page-header-banner mb-4">
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
+      <div>
+        <div class="d-flex align-items-center gap-2 mb-2">
+          <span class="badge-custom badge-blue"><i class="bi bi-sliders2"></i> Scenario Simulator</span>
+          <span class="badge-custom badge-emerald"><i class="bi bi-check-circle-fill"></i> Real Model Inferences</span>
+        </div>
+        <h2 class="text-white mb-1" style="font-size: 1.65rem;">Interactive What-If Scenario Planner</h2>
+        <p class="text-secondary mb-0" style="font-size: 0.875rem; max-width: 700px;">
+          Adjust campaign budget, duration, channel, and targeting parameters using interactive sliders. The system calculates exact absolute and percentage changes across ROI, revenue, and conversion efficiency.
+        </p>
+      </div>
+      <div class="btn-group shadow-sm">
+        <button type="button" class="btn btn-sm btn-outline-custom" onclick="loadWhatIfPreset('scale')">Scale Budget (+50%)</button>
+        <button type="button" class="btn btn-sm btn-outline-custom" onclick="loadWhatIfPreset('channel')">Test Channel Shift</button>
+        <button type="button" class="btn btn-sm btn-outline-custom" onclick="loadWhatIfPreset('duration')">Extend Flight (+30d)</button>
+      </div>
+    </div>
+  </div>
+
+  <form id="whatIfForm" onsubmit="handleWhatIfSubmit(event)">
+    <div class="row g-4 mb-4">
+      <!-- Current Baseline Scenario Column -->
+      <div class="col-12 col-lg-6">
+        <div class="dashboard-card h-100">
+          <div class="card-header-custom">
+            <h5><i class="bi bi-geo-alt-fill text-secondary"></i> Current Scenario (Baseline)</h5>
+            <span class="badge-custom badge-navy font-mono">Anchor State</span>
+          </div>
+          <div class="card-body-custom">
+            <div class="mb-3">
+              <label class="form-label-custom">Scenario Label</label>
+              <input type="text" class="form-control-custom" id="curName" value="Current Baseline Campaign" readonly style="background: rgba(14, 15, 24, 0.5);">
+            </div>
+
+            <div class="row g-2 mb-3">
+              <div class="col-6">
+                <label class="form-label-custom">Marketing Channel</label>
+                <select class="form-select-custom" id="curPlatform">
+                  {% for plat in options.platform %}
+                    <option value="{{ plat }}" {% if plat == sample.platform %}selected{% endif %}>{{ plat }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="col-6">
+                <label class="form-label-custom">Campaign Objective</label>
+                <select class="form-select-custom" id="curObjective">
+                  {% for obj in options.campaign_objective %}
+                    <option value="{{ obj }}" {% if obj == sample.campaign_objective %}selected{% endif %}>{{ obj }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+
+            <div class="row g-2 mb-3">
+              <div class="col-6">
+                <label class="form-label-custom">Creative Format</label>
+                <select class="form-select-custom" id="curFormat">
+                  {% for fmt in options.creative_format %}
+                    <option value="{{ fmt }}" {% if fmt == sample.creative_format %}selected{% endif %}>{{ fmt }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="col-6">
+                <label class="form-label-custom">Device Targeting</label>
+                <select class="form-select-custom" id="curDevice">
+                  {% for dev in options.device_type %}
+                    <option value="{{ dev }}" {% if dev == sample.device_type %}selected{% endif %}>{{ dev }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label-custom">
+                <span>Budget (INR ₹)</span>
+                <span class="sub text-primary fw-bold font-mono" id="curSpendDisplay">₹5,000.00</span>
+              </label>
+              <div class="input-slider-wrap">
+                <input type="range" class="slider-custom" id="curSpend" min="500" max="100000" step="500" value="5000" oninput="updateCurSpendDisplay(this.value)">
+                <span class="slider-value-display font-mono" id="curSpendBadge">₹5,000</span>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label-custom">
+                <span>Duration (Days)</span>
+                <span class="sub text-primary fw-bold font-mono" id="curDurDisplay">30 Days</span>
+              </label>
+              <div class="input-slider-wrap">
+                <input type="range" class="slider-custom" id="curDuration" min="1" max="90" value="30" oninput="updateCurDurDisplay(this.value)">
+                <span class="slider-value-display font-mono" id="curDurBadge">30d</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Proposed What-If Scenario Column -->
+      <div class="col-12 col-lg-6">
+        <div class="dashboard-card h-100" style="border-color: rgba(54, 214, 126, 0.45);">
+          <div class="card-header-custom" style="background: rgba(54, 214, 126, 0.05);">
+            <h5 class="text-white"><i class="bi bi-magic" style="color: var(--emerald-primary);"></i> Proposed Scenario (What-If)</h5>
+            <span class="badge-custom badge-emerald font-mono">Adjust & Simulate</span>
+          </div>
+          <div class="card-body-custom">
+            <div class="mb-3">
+              <label class="form-label-custom">Proposed Label</label>
+              <input type="text" class="form-control-custom" id="propName" value="Proposed Optimization Variant">
+            </div>
+
+            <div class="row g-2 mb-3">
+              <div class="col-6">
+                <label class="form-label-custom">Marketing Channel</label>
+                <select class="form-select-custom" id="propPlatform" style="border-color: rgba(54, 214, 126, 0.35);">
+                  {% for plat in options.platform %}
+                    <option value="{{ plat }}" {% if plat == "Google Ads" %}selected{% endif %}>{{ plat }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="col-6">
+                <label class="form-label-custom">Campaign Objective</label>
+                <select class="form-select-custom" id="propObjective">
+                  {% for obj in options.campaign_objective %}
+                    <option value="{{ obj }}" {% if obj == sample.campaign_objective %}selected{% endif %}>{{ obj }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+
+            <div class="row g-2 mb-3">
+              <div class="col-6">
+                <label class="form-label-custom">Creative Format</label>
+                <select class="form-select-custom" id="propFormat" style="border-color: rgba(54, 214, 126, 0.35);">
+                  {% for fmt in options.creative_format %}
+                    <option value="{{ fmt }}" {% if fmt == "Video" %}selected{% endif %}>{{ fmt }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="col-6">
+                <label class="form-label-custom">Device Targeting</label>
+                <select class="form-select-custom" id="propDevice" style="border-color: rgba(54, 214, 126, 0.35);">
+                  {% for dev in options.device_type %}
+                    <option value="{{ dev }}" {% if dev == "Desktop" %}selected{% endif %}>{{ dev }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label-custom">
+                <span>Proposed Budget (INR ₹)</span>
+                <span class="sub text-primary fw-bold font-mono" id="propSpendDisplay">₹10,000.00</span>
+              </label>
+              <div class="input-slider-wrap">
+                <input type="range" class="slider-custom" id="propSpend" min="500" max="100000" step="500" value="10000" oninput="updatePropSpendDisplay(this.value)">
+                <span class="slider-value-display font-mono text-primary fw-bold" id="propSpendBadge">₹10,000</span>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label-custom">
+                <span>Proposed Duration (Days)</span>
+                <span class="sub text-primary fw-bold font-mono" id="propDurDisplay">45 Days</span>
+              </label>
+              <div class="input-slider-wrap">
+                <input type="range" class="slider-custom" id="propDuration" min="1" max="90" value="45" oninput="updatePropDurDisplay(this.value)">
+                <span class="slider-value-display font-mono text-primary fw-bold" id="propDurBadge">45d</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="text-center mb-4">
+      <button type="submit" class="btn btn-accent-custom px-5 py-3 fs-6" id="btnCalculateWhatIf">
+        <i class="bi bi-calculator-fill fs-5"></i>
+        <span>Recalculate Predictions & Differences</span>
+      </button>
+    </div>
+  </form>
+
+  <!-- What-If Analysis Results Section -->
+  <div id="whatIfResultsContainer" class="d-none">
+    <!-- Scenario Assessment Verdict Banner -->
+    <div class="dashboard-card p-3 mb-4" id="verdictCard" style="border-left: 4px solid var(--emerald-primary);">
+      <div class="d-flex align-items-center gap-3">
+        <div id="verdictIcon" class="fs-2 text-success"></div>
+        <div>
+          <div class="text-uppercase fw-bold text-muted font-mono" style="font-size: 0.7rem; letter-spacing: 0.08em;">SCENARIO IMPACT ASSESSMENT</div>
+          <h5 class="mb-0 fw-bold text-white" id="verdictText">Scenario Evaluated</h5>
+        </div>
+      </div>
+    </div>
+
+    <!-- Key Deltas Cards Row -->
+    <div class="row g-3 mb-4 font-mono">
+      <div class="col-12 col-sm-6 col-xl-3">
+        <div class="dashboard-card p-3 mb-0">
+          <div class="text-muted" style="font-size: 0.75rem; font-weight: 600;">CHANGE IN PREDICTED ROI</div>
+          <div class="fs-4 fw-bold mt-1 text-white" id="deltaRoiVal">+0.0%</div>
+          <div class="mt-1" id="deltaRoiPill"></div>
+        </div>
+      </div>
+
+      <div class="col-12 col-sm-6 col-xl-3">
+        <div class="dashboard-card p-3 mb-0">
+          <div class="text-muted" style="font-size: 0.75rem; font-weight: 600;">CHANGE IN REVENUE</div>
+          <div class="fs-4 fw-bold mt-1 text-white" id="deltaRevVal">₹0.00</div>
+          <div class="mt-1" id="deltaRevPill"></div>
+        </div>
+      </div>
+
+      <div class="col-12 col-sm-6 col-xl-3">
+        <div class="dashboard-card p-3 mb-0">
+          <div class="text-muted" style="font-size: 0.75rem; font-weight: 600;">CONVERSION RATE DIFF</div>
+          <div class="fs-4 fw-bold mt-1 text-white" id="deltaCrVal">+0.0%</div>
+          <div class="mt-1" id="deltaCrPill"></div>
+        </div>
+      </div>
+
+      <div class="col-12 col-sm-6 col-xl-3">
+        <div class="dashboard-card p-3 mb-0">
+          <div class="text-muted" style="font-size: 0.75rem; font-weight: 600;">SUCCESS PROBABILITY</div>
+          <div class="fs-4 fw-bold mt-1 text-white" id="deltaSpVal">+0.0%</div>
+          <div class="mt-1" id="deltaSpPill"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Comparison Table & Visual Chart -->
+    <div class="row g-4 mb-4">
+      <div class="col-12 col-xl-6">
+        <div class="dashboard-card h-100">
+          <div class="card-header-custom">
+            <h5><i class="bi bi-table text-primary"></i> Side-by-Side Comparison Matrix</h5>
+          </div>
+          <div class="card-body-custom p-0">
+            <div class="table-responsive">
+              <table class="table-custom font-mono">
+                <thead>
+                  <tr>
+                    <th>Metric</th>
+                    <th>Current</th>
+                    <th>Proposed</th>
+                    <th>Difference</th>
+                  </tr>
+                </thead>
+                <tbody id="whatIfTableBody">
+                  <!-- Populated by JS -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-12 col-xl-6">
+        <div class="dashboard-card h-100">
+          <div class="card-header-custom">
+            <h5><i class="bi bi-bar-chart-steps text-primary"></i> Scenario Comparison Chart</h5>
+          </div>
+          <div class="card-body-custom">
+            <div style="height: 320px; position: relative;">
+              <canvas id="whatIfChart"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/what_if.js') }}"></script>
+{% endblock %}

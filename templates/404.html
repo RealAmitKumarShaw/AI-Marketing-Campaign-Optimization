@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}Page Not Found | 404 Error{% endblock %}
+{% block page_title %}Page Not Found{% endblock %}
+
+{% block content %}
+<div class="app-content">
+  <div class="dashboard-card text-center py-5">
+    <div class="empty-state-icon">
+      <i class="bi bi-question-circle"></i>
+    </div>
+    <h3 class="fw-bold text-white mb-2">404 - Page Not Found</h3>
+    <p class="text-secondary mx-auto mb-4" style="max-width: 450px; font-size: 0.875rem;">
+      The requested dashboard view or resource could not be found. Please check your URL or return to the main intelligence platform.
+    </p>
+    <a href="/" class="btn btn-accent-custom">
+      <i class="bi bi-arrow-left me-1"></i> Return to 3D Dashboard
+    </a>
+  </div>
+</div>
+{% endblock %}

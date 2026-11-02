@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}Internal Server Error | 500 Error{% endblock %}
+{% block page_title %}Internal Server Error{% endblock %}
+
+{% block content %}
+<div class="app-content">
+  <div class="dashboard-card text-center py-5">
+    <div class="empty-state-icon" style="background: var(--rose-subtle); color: var(--rose-primary);">
+      <i class="bi bi-exclamation-triangle-fill"></i>
+    </div>
+    <h3 class="fw-bold text-white mb-2">500 - System Error</h3>
+    <p class="text-secondary mx-auto mb-4" style="max-width: 450px; font-size: 0.875rem;">
+      An internal error occurred while processing the request. Our logging system has recorded the incident.
+    </p>
+    <a href="/" class="btn btn-accent-custom">
+      <i class="bi bi-arrow-left me-1"></i> Return to 3D Dashboard
+    </a>
+  </div>
+</div>
+{% endblock %}
