@@ -16,9 +16,9 @@ from src.predictor_engine import predict_campaign, format_currency_inr
 from src.dataset_analytics import get_categorical_options, get_platform_benchmarks
 
 
-# ============================================================
+
 # DOCUMENTED MULTI-OBJECTIVE SCORING STRATEGY
-# ============================================================
+
 #
 # Weights represent strategic priorities:
 # 1. Success Probability: Risk mitigation (profit > 0 likelihood)
