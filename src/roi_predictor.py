@@ -12,9 +12,9 @@ import numpy as np
 import pandas as pd
 
 
-# ============================================================
+
 # PATHS
-# ============================================================
+
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 MODEL_PATH = PROJECT_ROOT / "models" / "best_roi_model.pkl"
@@ -28,18 +28,18 @@ if not PREPROCESSOR_PATH.exists():
     raise FileNotFoundError(f"ROI preprocessor not found: {PREPROCESSOR_PATH}")
 
 
-# ============================================================
+
 # LOAD MODEL AND PREPROCESSOR
-# ============================================================
+
 
 model = joblib.load(MODEL_PATH)
 preprocessor = joblib.load(PREPROCESSOR_PATH)
 model_info = joblib.load(INFO_PATH) if INFO_PATH.exists() else {}
 
 
-# ============================================================
+
 # FEATURE DEFINITIONS
-# ============================================================
+
 
 CATEGORICAL_FEATURES = [
     "campaign_objective",
@@ -89,9 +89,9 @@ NUMERICAL_FEATURES = [
 EXPECTED_FEATURES = CATEGORICAL_FEATURES + NUMERICAL_FEATURES
 
 
-# ============================================================
+
 # HELPER FUNCTIONS
-# ============================================================
+
 
 def convert_quarter(value):
     if isinstance(value, str):
@@ -169,9 +169,9 @@ def prepare_roi_input(campaign_data):
     return data
 
 
-# ============================================================
+
 # PREDICTION FUNCTION
-# ============================================================
+
 
 def predict_roi(campaign_data):
     """
