@@ -12,9 +12,9 @@ import numpy as np
 import pandas as pd
 
 
-# ============================================================
+
 # PATHS
-# ============================================================
+
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 MODEL_PATH = PROJECT_ROOT / "models" / "success_model.pkl"
@@ -28,9 +28,9 @@ if not PREPROCESSOR_PATH.exists():
     raise FileNotFoundError(f"Success preprocessor not found: {PREPROCESSOR_PATH}")
 
 
-# ============================================================
+
 # LOAD MODEL AND PREPROCESSOR
-# ============================================================
+
 
 model = joblib.load(MODEL_PATH)
 preprocessor = joblib.load(PREPROCESSOR_PATH)
@@ -74,9 +74,9 @@ EXPECTED_FEATURES = model_info.get("features", [
 ])
 
 
-# ============================================================
+
 # PREPARATION & PREDICTION
-# ============================================================
+
 
 def convert_quarter(value):
     if isinstance(value, str):
