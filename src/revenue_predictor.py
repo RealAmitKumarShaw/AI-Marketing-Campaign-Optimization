@@ -15,9 +15,9 @@ import joblib
 import pandas as pd
 
 
-# ============================================================
+
 # PATHS
-# ============================================================
+
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 
@@ -25,9 +25,9 @@ MODEL_PATH = PROJECT_ROOT / "models" / "revenue_model.pkl"
 PREPROCESSOR_PATH = PROJECT_ROOT / "models" / "revenue_preprocessor.pkl"
 
 
-# ============================================================
+
 # LOAD MODEL AND PREPROCESSOR
-# ============================================================
+
 
 if not MODEL_PATH.exists():
     raise FileNotFoundError(
@@ -43,9 +43,9 @@ model = joblib.load(MODEL_PATH)
 preprocessor = joblib.load(PREPROCESSOR_PATH)
 
 
-# ============================================================
+
 # EXACT FEATURE ORDER
-# ============================================================
+
 
 EXPECTED_FEATURES = [
     "campaign_objective",
@@ -90,9 +90,9 @@ EXPECTED_FEATURES = [
 ]
 
 
-# ============================================================
+
 # CATEGORICAL FEATURES
-# ============================================================
+
 
 CATEGORICAL_FEATURES = [
     "campaign_objective",
@@ -115,9 +115,9 @@ CATEGORICAL_FEATURES = [
 ]
 
 
-# ============================================================
+
 # NUMERICAL FEATURES
-# ============================================================
+
 
 NUMERICAL_FEATURES = [
     "has_call_to_action",
@@ -145,9 +145,9 @@ NUMERICAL_FEATURES = [
 ]
 
 
-# ============================================================
+
 # REQUIRED INPUT FEATURES
-# ============================================================
+
 
 REQUIRED_INPUT_FEATURES = [
     "campaign_objective",
@@ -190,9 +190,9 @@ REQUIRED_INPUT_FEATURES = [
 ]
 
 
-# ============================================================
+
 # QUARTER CONVERSION
-# ============================================================
+
 
 def convert_quarter(value):
     """
@@ -224,9 +224,9 @@ def convert_quarter(value):
     return float(value)
 
 
-# ============================================================
+
 # VALIDATE INPUT
-# ============================================================
+
 
 def validate_input(campaign_data):
     """
@@ -254,9 +254,9 @@ def validate_input(campaign_data):
         )
 
 
-# ============================================================
+
 # PREPARE INPUT
-# ============================================================
+
 
 def prepare_input(campaign_data):
     """
@@ -268,9 +268,9 @@ def prepare_input(campaign_data):
     # Create DataFrame
     input_df = pd.DataFrame([campaign_data])
 
-    # --------------------------------------------------------
+    
     # DATE FEATURE ENGINEERING
-    # --------------------------------------------------------
+    
 
     input_df["start_date"] = pd.to_datetime(
         input_df["start_date"],
@@ -294,9 +294,9 @@ def prepare_input(campaign_data):
         inplace=True
     )
 
-    # --------------------------------------------------------
+    
     # BOOLEAN FEATURES
-    # --------------------------------------------------------
+    
 
     input_df["has_call_to_action"] = (
         input_df["has_call_to_action"].astype(int)
@@ -306,17 +306,17 @@ def prepare_input(campaign_data):
         input_df["retargeting_flag"].astype(int)
     )
 
-    # --------------------------------------------------------
+    
     # QUARTER
-    # --------------------------------------------------------
+    
 
     input_df["quarter"] = (
         input_df["quarter"].apply(convert_quarter)
     )
 
-    # --------------------------------------------------------
+    
     # NUMERICAL FEATURES
-    # --------------------------------------------------------
+    
 
     for column in NUMERICAL_FEATURES:
         input_df[column] = pd.to_numeric(
@@ -324,9 +324,9 @@ def prepare_input(campaign_data):
             errors="coerce"
         )
 
-    # --------------------------------------------------------
+    
     # CATEGORICAL FEATURES
-    # --------------------------------------------------------
+    
 
     for column in CATEGORICAL_FEATURES:
         input_df[column] = (
@@ -335,9 +335,9 @@ def prepare_input(campaign_data):
             .str.strip()
         )
 
-    # --------------------------------------------------------
+    
     # CHECK NUMERICAL VALUES
-    # --------------------------------------------------------
+    
 
     invalid_numeric = [
         column
@@ -354,9 +354,9 @@ def prepare_input(campaign_data):
             )
         )
 
-    # --------------------------------------------------------
+    
     # CHECK CATEGORICAL VALUES
-    # --------------------------------------------------------
+    
 
     invalid_categorical = [
         column
@@ -373,9 +373,9 @@ def prepare_input(campaign_data):
             )
         )
 
-    # --------------------------------------------------------
+    
     # CHECK REQUIRED FEATURES
-    # --------------------------------------------------------
+    
 
     missing_features = [
         column
@@ -392,15 +392,15 @@ def prepare_input(campaign_data):
             )
         )
 
-    # --------------------------------------------------------
+    
     # REMOVE EXTRA FEATURES AND MATCH TRAINING ORDER
-    # --------------------------------------------------------
+    
 
     input_df = input_df[EXPECTED_FEATURES].copy()
 
-    # --------------------------------------------------------
+    
     # FINAL FEATURE COUNT VALIDATION
-    # --------------------------------------------------------
+    
 
     if len(input_df.columns) != len(EXPECTED_FEATURES):
         raise ValueError(
@@ -412,9 +412,9 @@ def prepare_input(campaign_data):
     return input_df
 
 
-# ============================================================
+
 # PREDICT REVENUE
-# ============================================================
+
 
 def predict_revenue(campaign_data):
     """
@@ -423,9 +423,9 @@ def predict_revenue(campaign_data):
 
     input_df = prepare_input(campaign_data)
 
-    # --------------------------------------------------------
+    
     # PREPROCESS
-    # --------------------------------------------------------
+    
 
     try:
         processed_input = preprocessor.transform(input_df)
@@ -464,9 +464,9 @@ def predict_revenue(campaign_data):
 
         raise
 
-    # --------------------------------------------------------
+    
     # MODEL PREDICTION
-    # --------------------------------------------------------
+    
 
     prediction = model.predict(processed_input)[0]
 
@@ -476,9 +476,9 @@ def predict_revenue(campaign_data):
     return prediction
 
 
-# ============================================================
+
 # MODEL INFORMATION
-# ============================================================
+
 
 def get_model_info():
 
@@ -493,9 +493,9 @@ def get_model_info():
     }
 
 
-# ============================================================
+
 # MODULE TEST
-# ============================================================
+
 
 if __name__ == "__main__":
 
